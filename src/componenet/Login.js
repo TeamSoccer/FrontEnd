@@ -13,7 +13,7 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/login?username=${username}&password=${password}`, {
+      const response = await axios.post(`http://localhost:8080/login`, {
         username,
         password,
       }, { withCredentials: true });
