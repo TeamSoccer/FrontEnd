@@ -2,12 +2,12 @@ import './App.css';
 
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Join from './soccerTeam/Join';
-import Login from './soccerTeam/Login';
-import SoccerTeamList from './soccerTeam/SoccerTeamList';
-import SoccerTeamWrite from './soccerTeam/SoccerTeamWrite';
-import SoccerTeamDetail from './soccerTeam/SoccerTeamDetail';
-import SoccerTeamModify from './soccerTeam/SoccerTeamModify';
+import Join from './componenet/Join';
+import Login from './componenet/Login';
+import SoccerTeamList from './componenet/SoccerTeamList';
+import SoccerTeamWrite from './componenet/SoccerTeamWrite';
+import SoccerTeamDetail from './componenet/SoccerTeamDetail';
+import SoccerTeamModify from './componenet/SoccerTeamModify';
 import PlayerWrite from './soccerTeam/PlayerWrite';
 import PlayerDetail from './soccerTeam/PlayerDetail';
 import PlayerModify from './soccerTeam/PlayerModify';

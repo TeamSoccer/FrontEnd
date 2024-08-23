@@ -1,0 +1,73 @@
+/* SoccerTeamWrite.css */
+
+.write-container {
+  max-width: 800px;
+  margin: 3rem auto;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* 테이블 */
+.soccerTeam_write {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 2rem;
+}
+
+.soccerTeam_write td {
+  padding: 1rem;
+  vertical-align: top;
+  border-bottom: 1px solid #ddd;
+}
+
+.soccerTeam_write input[type="text"],
+.soccerTeam_write input[type="number"],
+.soccerTeam_write textarea,
+.soccerTeam_write input[type="file"] {
+  width: 100%;
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  font-size: 1rem;
+}
+
+.soccerTeam_write textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+/* 저장 취소 버튼 */
+.btn-container-SC {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+}
+
+/* 요일 버튼 */
+.day-buttons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.day-button {
+  padding: 0.6rem 1.2rem;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.day-button.selected {
+  background-color: #007acc;
+  color: white;
+}
+
+.day-button:hover {
+  background-color: #005ea1;
+  color: white;
+}

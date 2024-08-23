@@ -1,0 +1,119 @@
+/* SoccerTeamList.css */
+
+.list-container {
+  max-width: 1200px;
+  margin: 3rem auto;
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 16px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+}
+
+/* Header container */
+.header-container {
+  display: flex;
+  justify-content: center; /* 중간 정렬 */
+  align-items: center;
+  margin-bottom: 2rem;
+  position: relative; /* 로그인 버튼 위치 조정을 위해 */
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #333;
+  text-align: center;
+  flex-grow: 1; /* 타이틀이 중앙에 오도록 */
+}
+
+.search-actions {
+  position: absolute; /* 로그인 버튼을 절대 위치로 */
+  top: 0; /* 위쪽 끝에 위치하도록 */
+  left: 0; /* 오른쪽 끝에 위치하도록 */
+}
+
+.search-input {
+  padding: 0.3rem 0.5rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 150px !important;
+  height: 30px;
+}
+
+.search-type {
+  padding: 0.3rem;
+  margin-right: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 90px;
+}
+
+/* 로그인 버튼 */
+.login-btn {
+  background-color: #ff6b6b;
+  color: white;
+  padding: 0.7rem 1.4rem;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  position: absolute; /* 로그인 버튼을 절대 위치로 */
+  top: 0; /* 위쪽 끝에 위치하도록 */
+  right: 0; /* 오른쪽 끝에 위치하도록 */
+}
+
+.login-btn:hover {
+  background-color: #e55a5a;
+}
+
+/* 테이블 */
+.table-container {
+  overflow-x: auto;
+  margin-bottom: 2rem;
+}
+
+.team-list {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.team-list th,
+.team-list td {
+  padding: 1rem;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.team-list th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+/* .team-list tr {
+  transition: background-color 0.3s ease;
+}
+
+.team-list tr:hover {
+  background-color: #f9f9f9;
+}
+
+.team-list a {
+  color: #007acc;
+  text-decoration: none;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.team-list a:hover {
+  color: #005ea1;
+} */
+
+/* 등록된 팀 없음 메시지 */
+.no-teams {
+  text-align: center;
+  padding: 1rem;
+  color: #999;
+}
+
