@@ -12,7 +12,7 @@ function PlayerDetail() {
   useEffect(() => {
     const token = localStorage.getItem("token");
     axios.get(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
-      headers: { Authorization: 'Bearer ' + token }
+      headers: { token }
     })
       .then(response => {
         setPlayer(response.data);
