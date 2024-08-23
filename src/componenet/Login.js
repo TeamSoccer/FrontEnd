@@ -13,12 +13,13 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:8080/login`, {
+      const response = await axios.post(`http://localhost:8080/login?username=${username}&password=${password}`, {
         username,
         password,
       }, { withCredentials: true });
 
-      localStorage.setItem('token', response.headers.token);
+      localStorage.setItem('token', response.headers.getAuthorization);
+      
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
