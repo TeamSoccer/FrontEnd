@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -7,16 +8,17 @@ import '../css/CommonStyle.css';
 function SoccerTeamWrite() {
   const [formData, setFormData] = useState({
     title: '',
-    teamName: '',
+    name: '',
     region: '',
-    teamDay: [], // 요일을 배열로 관리
-    teamTime: '',
-    teamPeriod: '',
-    teamNumber: '',
-    teamOld: '',
+    phoneNumber: '',
+    period: '',
+    day: [], // 요일을 배열로 관리
+    startTime: '',
+    endTime: '',
+    ageAverage: '',
     needPosition: '',
-    needPositionNumber: '',
-    athleteNumber: '',
+    needPositionCnt: '',
+    athleteCnt: '',
     contents: ''
   });
   const [files, setFiles] = useState([]);
@@ -38,22 +40,22 @@ function SoccerTeamWrite() {
     const formattedPhoneNumber = input.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     setFormData({
       ...formData,
-      teamNumber: formattedPhoneNumber
+      phoneNumber: formattedPhoneNumber
     });
   };
 
-  const handleDayClick = (day) => {
+  const handleDayClick = (teamDay) => {
     setFormData(prevState => {
-      const { teamDay } = prevState;
-      if (teamDay.includes(day)) {
+      const { day } = prevState;
+      if (day.includes(teamDay)) {
         return {
           ...prevState,
-          teamDay: teamDay.filter(d => d !== day)
+          day: day.filter(d => d !== teamDay)
         };
       } else {
         return {
           ...prevState,
-          teamDay: [...teamDay, day]
+          day: [...day, teamDay]
         };
       }
     });
@@ -62,17 +64,17 @@ function SoccerTeamWrite() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('data', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
+    data.append('data', (JSON.stringify(formData), { type: 'application/json' }));
     Array.from(files).forEach(file => {
       data.append('files', file);
     });
 
     try {
       const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-      await axios.post('http://localhost:8080/api/soccerTeam/write', data, {
+      await axios.post('http://localhost:8080/api/soccerTeam/write', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
-          'Authorization': `Bearer ${token}` // Add the token here
+          'Authorization': token // Add the token here
         }
       });
       navigate('/');
@@ -98,7 +100,7 @@ function SoccerTeamWrite() {
             </tr>
             <tr>
               <td>팀 이름</td>
-              <td><input type="text" name="teamName" value={formData.teamName} onChange={handleChange} required /></td>
+              <td><input type="text" name="name" value={formData.name} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>운영 지역</td>
@@ -112,7 +114,7 @@ function SoccerTeamWrite() {
                     <button
                       type="button"
                       key={index}
-                      className={`day-button ${formData.teamDay.includes(day) ? 'selected' : ''}`}
+                      className={`day-button ${formData.day.includes(day) ? 'selected' : ''}`}
                       onClick={() => handleDayClick(day)}
                     >
                       {day}
@@ -122,20 +124,24 @@ function SoccerTeamWrite() {
               </td>
             </tr>
             <tr>
-              <td>진행 시간</td>
-              <td><input type="number" name="teamTime" value={formData.teamTime} onChange={handleChange} required /></td>
+              <td>진행 시작 시간</td>
+              <td><input type="time" name="startTime" value={formData.startTime} onChange={handleChange} required /></td>
+            </tr>
+            <tr>
+              <td>진행 종료 시간</td>
+              <td><input type="time" name="endTime" value={formData.endTime} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>운영 기간</td>
-              <td><input type="number" name="teamPeriod" value={formData.teamPeriod} onChange={handleChange} required /></td>
+              <td><input type="number" name="period" value={formData.period} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>휴대전화 (숫자만 입력)</td>
               <td>
                 <input
                   type="text"
-                  name="teamNumber"
-                  value={formData.teamNumber}
+                  name="phoneNumber"
+                  value={formData.phoneNumber}
                   onChange={handlePhoneInput}
                   maxLength="13"
                   required
@@ -144,7 +150,7 @@ function SoccerTeamWrite() {
             </tr>
             <tr>
               <td>팀 연령대</td>
-              <td><input type="number" name="teamOld" value={formData.teamOld} onChange={handleChange} required /></td>
+              <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>필요 포지션</td>
@@ -152,11 +158,11 @@ function SoccerTeamWrite() {
             </tr>
             <tr>
               <td>필요 포지션 수</td>
-              <td><input type="number" name="needPositionNumber" value={formData.needPositionNumber} onChange={handleChange} required /></td>
+              <td><input type="number" name="needPositionCnt" value={formData.needPositionCnt} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>선출 수</td>
-              <td><input type="number" name="athleteNumber" value={formData.athleteNumber} onChange={handleChange} required /></td>
+              <td><input type="number" name="athleteCnt" value={formData.athleteCnt} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>팀 소개</td>
