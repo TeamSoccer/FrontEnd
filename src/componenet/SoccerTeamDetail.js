@@ -14,12 +14,12 @@ function SoccerTeamDetail() {
     const token = localStorage.getItem("token");
     const response = await fetch(`http://localhost:8080/api/soccerTeam/${teamIdx}`, {
       headers: {
-        'Authorization': token
+        Authorization: token
       }
     })
     const result = await response.json();
     if(result.data !== null && result.status === 200) {
-      setSoccerTeam(result.data.data);
+      setSoccerTeam(result.data);
     } else {
       alert(`[${result.code}] ${result.message}`);
       navigate("/")
@@ -105,11 +105,11 @@ function SoccerTeamDetail() {
         ))} */}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
-      <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`)}>수정하기</button>
+      <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
       <button className="btn" onClick={() => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
           const token = localStorage.getItem("token");
-          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { token }})
+          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
             .then(() => navigate('/'))
             .catch(error => console.error('Error deleting soccer team:', error));
         }
