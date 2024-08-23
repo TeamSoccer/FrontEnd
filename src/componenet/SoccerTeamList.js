@@ -20,9 +20,11 @@ const SoccerTeamList = () => {
         setTeams([]);
       }
     };
-
+  
     fetchTeams();
   }, []);
+
+  console.log('Current teams state:', teams);
 
   return (
     <div className="list-container">
@@ -66,19 +68,19 @@ const SoccerTeamList = () => {
           <tbody>
             {Array.isArray(teams) && teams.length > 0 ? (
               teams.map(team => (
-                <tr key={team.teamIdx}>
-                  <td>{team.teamIdx}</td>
+                <tr key={team.id}>
+                  <td>{team.id}</td>
                   <td>
-                    <Link to={`/soccerTeam/${team.teamIdx}`}>{team.title}</Link>
+                    <Link to={`/soccerTeam/${team.id}`}>{team.title}</Link>
                   </td>
                   <td>
-                    <Link to={`/soccerTeam/${team.teamIdx}`}>{team.teamName}</Link>
+                    <Link to={`/soccerTeam/${team.id}`}>{team.name}</Link>
                   </td>
                   <td>{team.region}</td>
-                  <td>{team.teamDay}</td>
-                  <td>{team.teamTime}</td>
-                  <td>{new Date(team.createdDatetime).toLocaleDateString()}</td>
-                  <td>{new Date(team.updatedDatetime).toLocaleDateString()}</td>
+                  <td>{team.day}</td>
+                  <td>{`${team.startTime} - ${team.endTime}`}</td>
+                  <td>{new Date(team.createdAt).toLocaleDateString()}</td>
+                  <td>{new Date(team.updatedAt).toLocaleDateString()}</td>
                 </tr>
               ))
             ) : (
