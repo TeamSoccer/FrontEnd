@@ -12,11 +12,17 @@ function SoccerTeamDetail() {
 
   const getData = async() => {
     const token = localStorage.getItem("token");
-    const response = await axios.get(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: token });
-    if(response.status == 200) {
-      setSoccerTeam(response.data.data);
-      console.log(response.data);
+    const response = await fetch(`http://localhost:8080/api/soccerTeam/${teamIdx}`, {
+      headers: {
+        'Authorization': token
+      }
+    })
+    const result = await response.json();
+    if(result.data !== null && result.status === 200) {
+      setSoccerTeam(result.data.data);
     } else {
+      alert(`[${result.code}] ${result.message}`);
+      navigate("/")
       console.error('Error fetching soccer team details:', response.error);
     }
   }
