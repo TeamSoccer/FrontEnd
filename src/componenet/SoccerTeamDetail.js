@@ -10,25 +10,28 @@ function SoccerTeamDetail() {
   const [soccerTeam, setSoccerTeam] = useState(null);
   const [playerList, setPlayerList] = useState([]);
 
-  useEffect(() => {
+  const getData = async() => {
     const token = localStorage.getItem("token");
-    axios.get(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: 'Bearer ' + token }})
-      .then(response => {
-        setSoccerTeam(response.data.soccerTeam);
-        setPlayerList(response.data.playerList);
-      })
-      .catch(error => {
-        console.error('Error fetching soccer team details:', error);
-      });
+    const response = await axios.get(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: token });
+    if(response.status == 200) {
+      setSoccerTeam(response.data.data);
+      console.log(response.data);
+    } else {
+      console.error('Error fetching soccer team details:', response.error);
+    }
+  }
+  
+  useEffect(() => {
+    getData();
   }, [teamIdx]);
 
-  // if (!soccerTeam) return <div>Loading...</div>;
+  if (!soccerTeam) return <div>Loading...</div>;
 
   return (
     <div className="detail-container">
-      <h2>{"soccerTeam.teamName"}</h2>
+      <h2>{soccerTeam.name}</h2>
       <form id="frm" method="post" className='detail-form'>
-        <input type="hidden" id="teamIdx" name="teamIdx" value={"soccerTeam.teamIdx"} />
+        <input type="hidden" id="teamIdx" name="teamIdx" value={soccerTeam.id} />
         <table className="player_list">
           <colgroup>
             <col width="10%" />
@@ -38,49 +41,51 @@ function SoccerTeamDetail() {
           <tbody>
             <tr>
               <th scope="row">글 번호</th>
-              <td>{"soccerTeam.teamIdx"}</td>
+              <td>{soccerTeam.id}</td>
               <th scope="row">조회수</th>
-              <td>{"soccerTeam.hitCnt"}</td>
+              <td>{soccerTeam.hitCnt}</td>
               <th scope="row">작성일</th>
-              <td>{new Date("soccerTeam.createdDatetime").toLocaleString()}</td>
+              <td>{new Date(soccerTeam.createdAt).toLocaleString()}</td>
               <th scope="row">수정일</th>
-              <td>{new Date("soccerTeam.updatedDatetime").toLocaleString()}</td>
+              <td>{new Date(soccerTeam.updatedAt).toLocaleString()}</td>
             </tr>
             <tr>
               <th scope="row">팀 이름</th>
-              <td>{"soccerTeam.teamName"}</td>
+              <td>{soccerTeam.name}</td>
               <th scope="row">작성자</th>
-              <td>{"soccerTeam.creatorId"}</td>
+              <td>{soccerTeam.player.name}</td>
               <th scope="row">연락처</th>
-              <td colSpan="3">{"soccerTeam.teamNumber"}</td>
+              <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
             <th scope="row">요일</th>
-              <td>{"soccerTeam.teamDay"}</td>
-              <th scope="row">진행 시간</th>
-              <td>{"soccerTeam.teamTime"}시간</td>
+              <td>{soccerTeam.day}</td>
+              <th scope="row">시작 시간</th>
+              <td>{soccerTeam.startTime}</td>
+              <th scope="row">종료 시간</th>
+              <td>{soccerTeam.endTime}</td>
               <th scope="row">운영 기간</th>
-              <td>{"soccerTeam.teamPeriod"}년</td>
+              <td>{soccerTeam.period}년</td>
               <th scope="row">팀 연령대</th>
-              <td>{"soccerTeam.teamOld"}대</td>
+              <td>{soccerTeam.ageAverage}대</td>
             </tr>
             <tr>
               <th scope="row">지역</th>
-              <td>{"soccerTeam.region"}</td>
+              <td>{soccerTeam.region}</td>
               <th scope="row">선출 수</th>
-              <td>{"soccerTeam.athleteNumber"}명</td>
+              <td>{soccerTeam.athleteCnt}명</td>
               <th scope="row">필요 포지션</th>
-              <td>{"soccerTeam.needPosition"}</td>
+              <td>{soccerTeam.needPosition}</td>
               <th scope="row">필요 포지션 수</th>
-              <td>{"soccerTeam.needPositionNumber"}명</td>
+              <td>{soccerTeam.needPositionCnt}명</td>
             </tr>
             <tr>
               <th scope="row">제목</th>
-              <td colSpan="7">{"soccerTeam.title"}</td>
+              <td colSpan="7">{soccerTeam.title}</td>
             </tr>
             <tr>
               <th scope="row">내용</th>
-              <td colSpan="7">{"soccerTeam.contents"}</td>
+              <td colSpan="7">{soccerTeam.contents}</td>
             </tr>
           </tbody>
         </table>
@@ -98,7 +103,7 @@ function SoccerTeamDetail() {
       <button className="btn" onClick={() => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
           const token = localStorage.getItem("token");
-          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: 'Bearer ' + token }})
+          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { token }})
             .then(() => navigate('/'))
             .catch(error => console.error('Error deleting soccer team:', error));
         }
@@ -119,13 +124,13 @@ function SoccerTeamDetail() {
           <tbody>
             {playerList.length > 0 ? (
               playerList.map(player => (
-                <tr key={player.playerIdx}>
-                  <td>{player.playerAthlete ? 'O' : 'X'}</td>
-                  <td><a href={`/playerDetail/${player.playerIdx}`}>{player.playerName}</a></td>
-                  <td><a href={`/playerDetail/${player.playerIdx}`}>{player.title}</a></td>
+                <tr key={player.id}>
+                  <td>{player.athlete ? 'O' : 'X'}</td>
+                  <td><a href={`/playerDetail/${player.id}`}>{player.name}</a></td>
+                  <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
                   <td>{player.region}</td>
-                  <td>{player.createdDatetime}</td>
-                  <td>{player.updatedDatetime}</td>
+                  <td>{player.createdAt}</td>
+                  <td>{player.updatedAt}</td>
                 </tr>
               ))
             ) : (
