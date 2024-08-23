@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import './style.css';
+import '../css/PlayerWrite.css';
 
 function PlayerWrite() {
   const { teamIdx } = useParams(); // teamIdx를 URL에서 받아옴
@@ -52,31 +52,31 @@ function PlayerWrite() {
           <tbody>
             <tr>
               <td>제목</td>
-              <td><input type="text" name="title" value={formData.title} onChange={handleChange} /></td>
+              <td><input type="text" name="title" value={formData.title} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>본인 이름</td>
-              <td><input type="text" name="playerName" value={formData.playerName} onChange={handleChange} /></td>
+              <td><input type="text" name="playerName" value={formData.playerName} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>거주 지역</td>
-              <td><input type="text" name="region" value={formData.region} onChange={handleChange} /></td>
+              <td><input type="text" name="region" value={formData.region} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>구력</td>
-              <td><input type="number" name="playerPeriod" value={formData.playerPeriod} onChange={handleChange} /></td>
+              <td><input type="number" name="playerPeriod" value={formData.playerPeriod} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>연락처</td>
-              <td><input type="text" name="playerNumber" value={formData.playerNumber} onChange={handleChange} /></td>
+              <td><input type="text" name="playerNumber" value={formData.playerNumber} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>나이</td>
-              <td><input type="number" name="playerOld" value={formData.playerOld} onChange={handleChange} /></td>
+              <td><input type="number" name="playerOld" value={formData.playerOld} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>포지션</td>
-              <td><input type="text" name="playerPosition" value={formData.playerPosition} onChange={handleChange} /></td>
+              <td><input type="text" name="playerPosition" value={formData.playerPosition} onChange={handleChange} required /></td>
             </tr>
             <tr>
               <td>선출 여부</td>
@@ -84,12 +84,14 @@ function PlayerWrite() {
             </tr>
             <tr>
               <td>자기소개</td>
-              <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange}></textarea></td>
+              <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
             </tr>
           </tbody>
         </table>
-        <input type="submit" value="저장" className="btn" />
-        <button type="button" className="btn" onClick={() => navigate(`/soccerTeam/${teamIdx}`)}>취소</button>
+        <div className="btnP-container">
+          <input type="submit" value="저장" className="btnP" />
+          <button type="button" className="btnP" onClick={() => navigate(`/soccerTeam/${teamIdx}`)}>취소</button>
+        </div>
       </form>
     </div>
   );

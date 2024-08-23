@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
-import './style.css';
+import '../css/PlayerWrite.css';
 
 function PlayerModify() {
   const { playerIdx } = useParams();
@@ -92,13 +92,15 @@ function PlayerModify() {
               <td><input type="checkbox" name="playerAthlete" checked={formData.playerAthlete} onChange={handleChange} /></td>
             </tr>
             <tr>
-              <td>내용</td>
+              <td>자기소개</td>
               <td><textarea name="contents" value={formData.contents} onChange={handleChange}></textarea></td>
             </tr>
           </tbody>
         </table>
-        <input type="submit" value="저장" className="btn" />
-        <button type="button" className="btn" onClick={() => navigate(`/playerDetail/${playerIdx}`)}>취소</button>
+        <div className="btnP-container">
+          <input type="submit" value="저장" className="btnP" />
+          <button type="button" className="btnP" onClick={() => navigate(`/playerDetail/${playerIdx}`)}>취소</button>
+        </div>
       </form>
     </div>
   );

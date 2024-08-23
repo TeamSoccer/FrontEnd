@@ -13,12 +13,13 @@ function Login() {
     e.preventDefault();
 
     try {
-      const response = await axios.post(`http://localhost:8080/api/login?username=${username}&password=${password}`, {
+      const response = await axios.post(`http://localhost:8080/login?username=${username}&password=${password}`, {
         username,
         password,
       }, { withCredentials: true });
 
-      localStorage.setItem('token', response.headers.token);
+      localStorage.setItem('token', response.headers.getAuthorization);
+      
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
@@ -29,7 +30,7 @@ function Login() {
   return (
     <div className="joinlogin-container">
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}  className='JoinLogin-form'>
         <input
           type="text"
           placeholder="ID를 입력하세요."

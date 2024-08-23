@@ -1,0 +1,78 @@
+/* PlayerWrite.css */
+
+.container {
+    max-width: 800px;
+    margin: 3rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .Write-form {
+    width: 100%;
+  }
+  
+  table.player_write {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  
+  table.player_write td {
+    padding: 1rem;
+    vertical-align: middle;
+  }
+  
+  table.player_write input[type="text"],
+  table.player_write input[type="number"],
+  table.player_write textarea {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+  }
+  
+  table.player_write textarea {
+    height: 100px;
+    resize: none;
+  }
+  
+  table.player_write input[type="checkbox"] {
+    width: auto;
+    margin-left: 0.5rem;
+  }
+  
+  .btnP {
+    background-color: #007acc;
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+  }
+  
+  .btnP:hover {
+    background-color: #005ea1;
+  }
+  
+  .btnP-container {
+    display: flex;
+    justify-content: flex-end;
+  }

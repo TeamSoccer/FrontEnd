@@ -1,0 +1,59 @@
+/* PlayerDetail.css */
+
+.player-container {
+    max-width: 1500px;
+    margin: 3rem auto;
+    background: #ffffff;
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  }
+  
+  h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .Pdetail-form {
+    width: 100%;
+  }
+  
+  table.player_list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+  }
+  
+  table.player_list td,
+  table.player_list th {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table.player_list th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+  }
+  
+  .btnPD {
+    background-color: #007acc;
+    color: white;
+    padding: 0.7rem 1.4rem;
+    border-radius: 8px;
+    text-decoration: none;
+    text-align: center;
+    margin-right: 0.5rem;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    display: inline-block;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .btnPD:hover {
+    background-color: #005ea1;
+  }

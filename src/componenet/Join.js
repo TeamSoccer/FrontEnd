@@ -11,7 +11,7 @@ function Join() {
     passwordConfirm: '',
     name: '',
     email: '',
-    phone: '',
+    phoneNumber: '',
     age: '',
     period: '',
     athlete: false,
@@ -24,7 +24,7 @@ function Join() {
 
     if (e.target.type === 'checkbox') {
       value = e.target.checked;
-    } else if (e.target.name === 'teamNumber') {
+    } else if (e.target.name === 'phoneNumber') {
       const input = e.target.value.replace(/\D/g, ''); // 숫자 이외의 문자 제거
       value = input.replace(/(\d{3})(\d{4})(\d{4})/, '$1-$2-$3');
     }
@@ -110,9 +110,9 @@ function Join() {
           />
           <input
             type="text"
-            name="teamNumber"
+            name="phoneNumber"
             placeholder="전화번호를 입력하세요."
-            value={formData.teamNumber}
+            value={formData.phoneNumber}
             maxLength="13"
             onChange={handleChange}
             required

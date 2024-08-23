@@ -10,7 +10,7 @@
   }
   
   /* Form */
-  form {
+  .JoinLogin-form {
     display: flex;
     flex-direction: column;
     gap: 1rem; /* 각 섹션 간의 간격 */
