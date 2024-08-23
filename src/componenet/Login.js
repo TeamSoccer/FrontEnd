@@ -18,7 +18,7 @@ function Login() {
         password,
       }, { withCredentials: true });
 
-      localStorage.setItem('token', response.headers.getAuthorization);
+      localStorage.setItem('token', response.headers.getAuthorization());
       
       navigate('/');
     } catch (error) {
