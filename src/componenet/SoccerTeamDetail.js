@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import '../css/CommonStyle.css';
+import '../css/SoccerTeamDetail.css';
 
 function SoccerTeamDetail() {
   const { teamIdx } = useParams();
@@ -23,9 +25,9 @@ function SoccerTeamDetail() {
   // if (!soccerTeam) return <div>Loading...</div>;
 
   return (
-    <div className="container">
+    <div className="detail-container">
       <h2>{"soccerTeam.teamName"}</h2>
-      <form id="frm" method="post">
+      <form id="frm" method="post" className='detail-form'>
         <input type="hidden" id="teamIdx" name="teamIdx" value={"soccerTeam.teamIdx"} />
         <table className="player_list">
           <colgroup>
@@ -102,7 +104,7 @@ function SoccerTeamDetail() {
         }
       }}>삭제하기</button>
       <div>
-        <h3>선수 목록</h3>
+        <h3 className='detail-h3'>선수 목록</h3>
         <table className="player_list">
           <thead>
             <tr>
@@ -133,7 +135,7 @@ function SoccerTeamDetail() {
             )}
           </tbody>
         </table>
-        <button className="btn" onClick={() => navigate(`/playerWrite/${teamIdx}`)}>글쓰기</button>
+        <button className="btn" onClick={() => navigate(`/playerWrite/${teamIdx}`)}>입단신청</button>
       </div>
     </div>
   );

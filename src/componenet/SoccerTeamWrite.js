@@ -86,7 +86,7 @@ function SoccerTeamWrite() {
   return (
     <div className="write-container">
       <h2>팀 등록</h2>
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
+      <form onSubmit={handleSubmit} encType="multipart/form-data" className='Write-form'>
         <table className="soccerTeam_write">
           <tbody>
             <tr>

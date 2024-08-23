@@ -30,7 +30,7 @@ function Login() {
   return (
     <div className="joinlogin-container">
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit}  className='JoinLogin-form'>
         <input
           type="text"
           placeholder="ID를 입력하세요."
