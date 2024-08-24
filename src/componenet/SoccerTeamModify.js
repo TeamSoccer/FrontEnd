@@ -8,12 +8,55 @@ function SoccerTeamModify() {
   const { teamIdx } = useParams();
   const navigate = useNavigate();
   const [files, setFiles] = useState([]);
-  const [teamData, setTeamData] = useState();
+  const [teamData, setTeamData] = useState({
+    title: '',
+    name: '',
+    region: '',
+    phoneNumber: '',
+    period: '',
+    day: [], // 요일을 배열로 관리
+    startTime: '',
+    endTime: '',
+    ageAverage: '',
+    needPosition: '',
+    needPositionCnt: '',
+    athleteCnt: '',
+    contents: ''
+  }
+
+  );
   const location = useLocation();
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     setTeamData(location.state.soccerTeam);
   }, [])
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!teamData.title.trim()) {
+      newErrors.title = '제목을 입력해주세요.';
+    }
+    if (!teamData.name.trim()) {
+      newErrors.name = '팀 이름을 입력해주세요.';
+    }
+    if (!teamData.region.trim()) {
+      newErrors.region = '활동 지역을 입력해주세요.';
+    }
+    if (!teamData.phoneNumber || !/^\d{3}-\d{4}-\d{4}$/.test(teamData.phoneNumber)) {
+      newErrors.phoneNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
+    }
+    if (!teamData.startTime) {
+      newErrors.startTime = '활동 시작 시간을 입력해주세요.';
+    }
+    if (!teamData.endTime) {
+      newErrors.endTime = '활동 종료 시간을 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -55,6 +98,11 @@ function SoccerTeamModify() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(`http://localhost:8080/api/soccerTeam`, {
@@ -93,16 +141,19 @@ function SoccerTeamModify() {
               <td>제목</td>
               <td><input type="text" name="title" value={teamData.title} onChange={handleChange} required /></td>
             </tr>
+            {errors.title && <p className="error">{errors.title}</p>}
             <tr>
               <td>팀 이름</td>
               <td><input type="text" name="name" value={teamData.name} onChange={handleChange} required /></td>
             </tr>
+            {errors.name && <p className="error">{errors.name}</p>}
             <tr>
-              <td>지역</td>
+              <td>활동 지역</td>
               <td><input type="text" name="region" value={teamData.region} onChange={handleChange} required /></td>
             </tr>
+            {errors.region && <p className="error">{errors.region}</p>}
             <tr>
-              <td>요일</td>
+              <td>활동 요일</td>
               <td>
                 <div className="day-buttons">
                   {['월', '화', '수', '목', '금', '토', '일'].map((day, index) => (
@@ -119,13 +170,15 @@ function SoccerTeamModify() {
               </td>
             </tr>
             <tr>
-              <td>진행 시작 시간</td>
+              <td>활동 시작 시간</td>
               <td><input type="time" name="startTime" value={teamData.startTime} onChange={handleChange} required /></td>
             </tr>
+            {errors.startTime && <p className="error">{errors.startTime}</p>}
             <tr>
-              <td>진행 종료 시간</td>
+              <td>활동 종료 시간</td>
               <td><input type="time" name="endTime" value={teamData.endTime} onChange={handleChange} required /></td>
             </tr>
+            {errors.endTime && <p className="error">{errors.endTime}</p>}
             <tr>
               <td>운영 기간</td>
               <td><input type="number" name="period" value={teamData.period} onChange={handleChange} required /></td>
@@ -143,6 +196,7 @@ function SoccerTeamModify() {
                 />
               </td>
             </tr>
+            {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
             <tr>
               <td>팀 연령대</td>
               <td><input type="number" name="ageAverage" value={teamData.ageAverage} onChange={handleChange} required /></td>

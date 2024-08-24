@@ -23,6 +23,33 @@ function SoccerTeamWrite() {
   });
   const [files, setFiles] = useState([]);
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = '제목을 입력해주세요.';
+    }
+    if (!formData.name.trim()) {
+      newErrors.name = '팀 이름을 입력해주세요.';
+    }
+    if (!formData.region.trim()) {
+      newErrors.region = '활동 지역을 입력해주세요.';
+    }
+    if (!formData.phoneNumber || !/^\d{3}-\d{4}-\d{4}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
+    }
+    if (!formData.startTime) {
+      newErrors.startTime = '활동 시작 시간을 입력해주세요.';
+    }
+    if (!formData.endTime) {
+      newErrors.endTime = '활동 종료 시간을 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -63,6 +90,11 @@ function SoccerTeamWrite() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     const data = new FormData();
     data.append('data', (JSON.stringify(formData), { type: 'application/json' }));
     Array.from(files).forEach(file => {
@@ -98,16 +130,19 @@ function SoccerTeamWrite() {
               <td>제목</td>
               <td><input type="text" name="title" value={formData.title} onChange={handleChange} required /></td>
             </tr>
+            {errors.title && <p className="error">{errors.title}</p>}
             <tr>
               <td>팀 이름</td>
               <td><input type="text" name="name" value={formData.name} onChange={handleChange} required /></td>
             </tr>
+            {errors.name && <p className="error">{errors.name}</p>}
             <tr>
-              <td>운영 지역</td>
+              <td>활동 지역</td>
               <td><input type="text" name="region" value={formData.region} onChange={handleChange} required /></td>
             </tr>
+            {errors.region && <p className="error">{errors.region}</p>}
             <tr>
-              <td>요일</td>
+              <td>활동 요일</td>
               <td>
                 <div className="day-buttons">
                   {['월', '화', '수', '목', '금', '토', '일'].map((day, index) => (
@@ -124,13 +159,15 @@ function SoccerTeamWrite() {
               </td>
             </tr>
             <tr>
-              <td>진행 시작 시간</td>
+              <td>활동 시작 시간</td>
               <td><input type="time" name="startTime" value={formData.startTime} onChange={handleChange} required /></td>
             </tr>
+            {errors.startTime && <p className="error">{errors.startTime}</p>}
             <tr>
-              <td>진행 종료 시간</td>
+              <td>활동 종료 시간</td>
               <td><input type="time" name="endTime" value={formData.endTime} onChange={handleChange} required /></td>
             </tr>
+            {errors.endTime && <p className="error">{errors.endTime}</p>}
             <tr>
               <td>운영 기간</td>
               <td><input type="number" name="period" value={formData.period} onChange={handleChange} required /></td>
@@ -148,6 +185,7 @@ function SoccerTeamWrite() {
                 />
               </td>
             </tr>
+            {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
             <tr>
               <td>팀 연령대</td>
               <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} required /></td>
