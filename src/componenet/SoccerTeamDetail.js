@@ -9,6 +9,10 @@ function SoccerTeamDetail() {
   const navigate = useNavigate();
   const [soccerTeam, setSoccerTeam] = useState(null);
   const [playerList, setPlayerList] = useState([]);
+  const [isOwner, setIsOwner] = useState(false); // 작성자 여부 확인 상태
+
+  const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+  const loggedInUsername = localStorage.getItem('username');
 
   const getData = async() => {
     const token = localStorage.getItem("token");
@@ -16,16 +20,20 @@ function SoccerTeamDetail() {
       headers: {
         Authorization: token
       }
-    })
+    });
     const result = await response.json();
-    if(result.data !== null && result.status === 200) {
+    if (result.data !== null && result.status === 200) {
       setSoccerTeam(result.data);
+      
+      if (result.data.player.username === loggedInUsername) {  // 작성자와 로그인 사용자가 동일한지 확인
+        setIsOwner(true);
+      }
     } else {
       alert(`[${result.code}] ${result.message}`);
-      navigate("/")
+      navigate("/");
       console.error('Error fetching soccer team details:', response.error);
     }
-  }
+  };
   
   useEffect(() => {
     getData();
@@ -42,7 +50,6 @@ function SoccerTeamDetail() {
           <colgroup>
             <col width="10%" />
             <col width="10%" />
-            
           </colgroup>
           <tbody>
             <tr>
@@ -64,7 +71,7 @@ function SoccerTeamDetail() {
               <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
-            <th scope="row">요일</th>
+              <th scope="row">요일</th>
               <td>{soccerTeam.day}</td>
               <th scope="row">시작 시간</th>
               <td>{soccerTeam.startTime}</td>
@@ -105,15 +112,19 @@ function SoccerTeamDetail() {
         ))} */}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
-      <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
-      <button className="btn" onClick={() => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-          const token = localStorage.getItem("token");
-          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
-            .then(() => navigate('/'))
-            .catch(error => console.error('Error deleting soccer team:', error));
-        }
-      }}>삭제하기</button>
+      {isOwner && (  // 작성자만 수정 및 삭제 버튼 보이게
+        <>
+          <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
+          <button className="btn" onClick={() => {
+            if (window.confirm("정말 삭제하시겠습니까?")) {
+              const token = localStorage.getItem("token");
+              axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
+                .then(() => navigate('/'))
+                .catch(error => console.error('Error deleting soccer team:', error));
+            }
+          }}>삭제하기</button>
+        </>
+      )}
       <div>
         <h3 className='detail-h3'>선수 목록</h3>
         <table className="player_list">
@@ -146,7 +157,14 @@ function SoccerTeamDetail() {
             )}
           </tbody>
         </table>
-        <button className="btn" onClick={() => navigate(`/playerWrite/${teamIdx}`)}>입단신청</button>
+        <button className="btn" onClick={() => {
+          if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');  // 로그인하지 않은 경우 로그인 페이지로 이동
+          } else {
+            navigate(`/playerWrite/${teamIdx}`);
+          }
+        }}>입단신청</button>
       </div>
     </div>
   );

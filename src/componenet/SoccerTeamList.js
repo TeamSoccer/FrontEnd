@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../css/ScoccerTeamList.css';
 import '../css/CommonStyle.css';
 
-const SoccerTeamList = () => {
+const SoccerTeamList = ({ isLoggedIn, onLogout }) => {  // isLoggedIn과 onLogout prop 추가
   const [teams, setTeams] = useState([]);
   const [searchType, setSearchType] = useState('title');
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchTeams = async () => {
@@ -24,7 +25,18 @@ const SoccerTeamList = () => {
     fetchTeams();
   }, []);
 
-  console.log('Current teams state:', teams);
+  const handleLogoutClick = () => {  // 로그아웃 버튼 클릭 시 호출
+    onLogout();  // App.js에서 전달된 onLogout 함수 호출
+  };
+
+  const handleTeamRegisterClick = () => {
+    if (!isLoggedIn) {  // 로그인 여부 확인
+      alert('로그인이 필요합니다. 로그인 페이지로 이동합니다.');  // 경고 메시지 표시
+      navigate('/login');  // 로그인 페이지로 이동
+    } else {
+      navigate('/soccerTeam/write');  // 로그인된 상태라면 팀 등록 페이지로 이동
+    }
+  };
 
   return (
     <div className="list-container">
@@ -49,7 +61,11 @@ const SoccerTeamList = () => {
         </div>
 
         <h2 className="title">팀 게시판</h2>
-        <Link to="/login" className="login-btn">로그인</Link>
+        {isLoggedIn ? (  // 로그인 상태에 따라 버튼 텍스트 변경
+          <button onClick={handleLogoutClick} className="login-btn">로그아웃</button>
+        ) : (
+          <Link to="/login" className="login-btn">로그인</Link>
+        )}
       </div>
       <div className="table-container">
         <table className="team-list">
@@ -91,7 +107,7 @@ const SoccerTeamList = () => {
           </tbody>
         </table>
       </div>
-      <Link to="/soccerTeam/write" className="BTN">팀 등록</Link>
+      <button onClick={handleTeamRegisterClick} className="BTN">팀 등록</button>  {/* 로그인 확인 후 동작 */}
     </div>
   );
 };

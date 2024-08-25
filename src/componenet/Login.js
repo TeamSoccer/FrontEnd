@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/JoinLogin.css';
 import '../css/CommonStyle.css';
 
-function Login() {
+function Login({ onLogin }) {  // onLogin prop 추가
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -20,6 +20,7 @@ function Login() {
 
       localStorage.setItem('token', response.headers.getAuthorization());
       
+      onLogin(username);  // 로그인 성공 시 onLogin 호출하여 App.js에서 상태 업데이트
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
