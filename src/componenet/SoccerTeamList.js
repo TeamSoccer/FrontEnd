@@ -19,8 +19,8 @@ const SoccerTeamList = () => {
         setFilteredTeams(response.data.data); // 초기 로드 시 전체 데이터를 filteredTeams에 설정
       } catch (error) {
         console.error('Error fetching teams:', error);
-        setTeams([]);
-        setFilteredTeams([]); // 오류 발생 시 filteredTeams도 빈 배열로 설정
+        setTeams([]); // 오류 발생 시 빈 배열로 설정
+        setFilteredTeams([]); // 오류 발생 시 빈 배열로 설정
       }
     };
   
@@ -40,8 +40,6 @@ const SoccerTeamList = () => {
       }
       return false;
     });
-    console.log('Search term:', searchTerm); // 검색어를 콘솔에 출력
-    console.log('Filtered teams:', filtered); // 필터링된 결과를 콘솔에 출력
     setFilteredTeams(filtered); // 필터링된 결과를 filteredTeams에 설정
   };
 
