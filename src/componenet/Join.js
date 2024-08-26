@@ -17,7 +17,37 @@ function Join() {
     athlete: false,
   });
 
+  const [errors, setErrors] = useState({});
   const navigate = useNavigate();
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.username.trim()) {
+      newErrors.username = 'ID를 입력해주세요.';
+    }
+    if (!formData.password) {
+      newErrors.password = '비밀번호를 입력해주세요.';
+    }
+    if (formData.password !== formData.passwordConfirm) {
+      newErrors.passwordConfirm = '비밀번호가 일치하지 않습니다.';
+    }
+    if (!formData.name.trim()) {
+      newErrors.name = '이름을 입력해주세요.';
+    }
+    if (!formData.email.trim() || !/\S+@\S+\.\S+/.test(formData.email)) {
+      newErrors.email = '유효한 이메일 주소를 입력해주세요.';
+    }
+    if (!/^\d{3}-\d{4}-\d{4}$/.test(formData.phoneNumber)) {
+      newErrors.phoneNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
+    }
+    if (!formData.age || formData.age < 10 || formData.age > 100) {
+      newErrors.age = '유효한 나이를 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     let value = e.target.value;
@@ -37,10 +67,11 @@ function Join() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (formData.password !== formData.passwordConfirm) {
-      alert('Passwords do not match');
+
+    if (!validate()) {
       return;
     }
+
     try {
       const response = await axios.post('http://localhost:8080/api/join', formData, {
         headers: {
@@ -72,6 +103,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.username && <p className="error">{errors.username}</p>}
           <input
             type="password"
             name="password"
@@ -80,6 +112,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.password && <p className="error">{errors.password}</p>}
           <input
             type="password"
             name="passwordConfirm"
@@ -88,6 +121,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.passwordConfirm && <p className="error">{errors.passwordConfirm}</p>}
         </div>
         
         <div className="form-section">
@@ -100,6 +134,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.name && <p className="error">{errors.name}</p>}
           <input
             type="email"
             name="email"
@@ -108,6 +143,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.email && <p className="error">{errors.email}</p>}
           <input
             type="text"
             name="phoneNumber"
@@ -117,6 +153,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
           <input
             type="number"
             name="age"
@@ -125,6 +162,7 @@ function Join() {
             onChange={handleChange}
             required
           />
+          {errors.age && <p className="error">{errors.age}</p>}
         </div>
 
         <div className="form-section">
@@ -135,7 +173,6 @@ function Join() {
             placeholder="구력을 입력하세요."
             value={formData.period}
             onChange={handleChange}
-            // required
           />
           <div className="checkbox-container">
             <label>

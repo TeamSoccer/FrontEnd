@@ -8,9 +8,26 @@ function Login() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+    if (!username.trim()) {
+      newErrors.username = 'ID를 입력하세요.';
+    }
+    if (!password.trim()) {
+      newErrors.password = '비밀번호를 입력해주세요.';
+    }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
 
     try {
       const response = await axios.post(`http://localhost:8080/login?username=${username}&password=${password}`, {
@@ -38,6 +55,7 @@ function Login() {
           onChange={(e) => setUsername(e.target.value)}
           required
         />
+        {errors.username && <p className="error">{errors.username}</p>}
         <input
           type="password"
           placeholder="패스워드를 입력하세요."
@@ -45,6 +63,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           required
         />
+        {errors.password && <p className="error">{errors.password}</p>}
         <input type="submit" value="로그인" className="btn-joinlogin" />
       </form>
       <div className="join-link-container">

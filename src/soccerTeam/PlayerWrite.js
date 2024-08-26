@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../css/PlayerWrite.css';
 
 function PlayerWrite() {
-  const { teamIdx } = useParams(); // teamIdx를 URL에서 받아옴
+  const { teamIdx } = useParams(); 
   const [formData, setFormData] = useState({
     title: '',
     playerName: '',
@@ -17,6 +17,33 @@ function PlayerWrite() {
     contents: ''
   });
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = '제목을 입력해주세요.';
+    }
+    if (!formData.playerName.trim()) {
+      newErrors.playerName = '이름을 입력해주세요.';
+    }
+    if (!formData.region.trim()) {
+      newErrors.region = '거주 지역을 입력해주세요.';
+    }
+    if (!formData.playerNumber || !/^\d{3}-\d{4}-\d{4}$/.test(formData.playerNumber)) {
+      newErrors.playerNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
+    }
+    if (!formData.playerOld || formData.playerOld < 10 || formData.playerOld > 100) {
+      newErrors.playerOld = '유효한 나이를 입력해주세요.';
+    }
+    if (!formData.playerPosition.trim()) {
+      newErrors.playerPosition = '포지션을 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,17 +55,22 @@ function PlayerWrite() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:8080/api/soccerTeam/player/write', {
+      await axios.post('http://localhost:8080/api/enroll/write', {
         ...formData,
-        teamIdx
+        teamId: teamIdx
       }, {
         headers: {
           Authorization: 'Bearer ' + token
         }
       });
-      navigate(`/soccerTeam/${teamIdx}`); // 저장 후 팀 상세 페이지로 이동
+      navigate(`/soccerTeam/${teamIdx}`); 
     } catch (error) {
       console.error('Error adding player:', error);
     }
@@ -54,14 +86,17 @@ function PlayerWrite() {
               <td>제목</td>
               <td><input type="text" name="title" value={formData.title} onChange={handleChange} required /></td>
             </tr>
+            {errors.title && <p className="error">{errors.title}</p>}
             <tr>
               <td>본인 이름</td>
               <td><input type="text" name="playerName" value={formData.playerName} onChange={handleChange} required /></td>
             </tr>
+            {errors.playerName && <p className="error">{errors.playerName}</p>}
             <tr>
               <td>거주 지역</td>
               <td><input type="text" name="region" value={formData.region} onChange={handleChange} required /></td>
             </tr>
+            {errors.region && <p className="error">{errors.region}</p>}
             <tr>
               <td>구력</td>
               <td><input type="number" name="playerPeriod" value={formData.playerPeriod} onChange={handleChange} required /></td>
@@ -70,14 +105,17 @@ function PlayerWrite() {
               <td>연락처</td>
               <td><input type="text" name="playerNumber" value={formData.playerNumber} onChange={handleChange} required /></td>
             </tr>
+            {errors.playerNumber && <p className="error">{errors.playerNumber}</p>}
             <tr>
               <td>나이</td>
               <td><input type="number" name="playerOld" value={formData.playerOld} onChange={handleChange} required /></td>
             </tr>
+            {errors.playerOld && <p className="error">{errors.playerOld}</p>}
             <tr>
               <td>포지션</td>
               <td><input type="text" name="playerPosition" value={formData.playerPosition} onChange={handleChange} required /></td>
             </tr>
+            {errors.playerPosition && <p className="error">{errors.playerPosition}</p>}
             <tr>
               <td>선출 여부</td>
               <td><input type="checkbox" name="playerAthlete" checked={formData.playerAthlete} onChange={handleChange} /></td>
