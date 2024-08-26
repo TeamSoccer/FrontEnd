@@ -133,7 +133,7 @@ function SoccerTeamWrite() {
             </tr>
             <tr>
               <td>운영 기간</td>
-              <td><input type="number" name="period" value={formData.period} onChange={handleChange} required /></td>
+              <td><input type="number" name="period" value={formData.period} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>휴대전화 (숫자만 입력)</td>
@@ -150,23 +150,23 @@ function SoccerTeamWrite() {
             </tr>
             <tr>
               <td>팀 연령대</td>
-              <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} required /></td>
+              <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션</td>
-              <td><input type="text" name="needPosition" value={formData.needPosition} onChange={handleChange} required /></td>
+              <td><input type="text" name="needPosition" value={formData.needPosition} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션 수</td>
-              <td><input type="number" name="needPositionCnt" value={formData.needPositionCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="needPositionCnt" value={formData.needPositionCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>선출 수</td>
-              <td><input type="number" name="athleteCnt" value={formData.athleteCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="athleteCnt" value={formData.athleteCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>팀 소개</td>
-              <td><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
+              <td><textarea name="contents" value={formData.contents} onChange={handleChange}></textarea></td>
             </tr>
           </tbody>
         </table>
