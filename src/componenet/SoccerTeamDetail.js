@@ -19,6 +19,7 @@ function SoccerTeamDetail() {
     })
     const result = await response.json();
     if(result.data !== null && result.status === 200) {
+      result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
     } else {
       alert(`[${result.code}] ${result.message}`);
