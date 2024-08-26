@@ -34,6 +34,17 @@ function SoccerTeamDetail() {
       console.error('Error fetching soccer team details:', response.error);
     }
   };
+
+  // 요일 순서를 정의합니다.
+  const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+
+  const sortDays = (daysString) => {
+    if (!daysString) return '';
+
+    const daysArray = daysString.split(',');  // 문자열을 배열로 변환
+    const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));  // 요일 정렬
+    return sortedDaysArray.join(', ');  // 다시 문자열로 변환
+  };
   
   useEffect(() => {
     getData();
@@ -72,7 +83,7 @@ function SoccerTeamDetail() {
             </tr>
             <tr>
               <th scope="row">요일</th>
-              <td>{soccerTeam.day}</td>
+              <td>{sortDays(soccerTeam.day)}</td>
               <th scope="row">시작 시간</th>
               <td>{soccerTeam.startTime}</td>
               <th scope="row">종료 시간</th>

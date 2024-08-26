@@ -38,6 +38,17 @@ const SoccerTeamList = ({ isLoggedIn, onLogout }) => {  // isLoggedIn과 onLogou
     }
   };
 
+  // 요일 순서 정의
+  const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+
+  const sortDays = (daysString) => {
+    if (!daysString) return '';
+
+    const daysArray = daysString.split(',');  // 문자열을 배열로 변환
+    const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));  // 요일 정렬
+    return sortedDaysArray.join(', ');  // 다시 문자열로 변환
+  };
+
   return (
     <div className="list-container">
       <div className="header-container">
@@ -89,11 +100,9 @@ const SoccerTeamList = ({ isLoggedIn, onLogout }) => {  // isLoggedIn과 onLogou
                   <td>
                     <Link to={`/soccerTeam/${team.id}`}>{team.title}</Link>
                   </td>
-                  <td>
-                    <Link to={`/soccerTeam/${team.id}`}>{team.name}</Link>
-                  </td>
+                  <td>{team.name}</td>
                   <td>{team.region}</td>
-                  <td>{team.day}</td>
+                  <td>{sortDays(team.day)}</td>
                   <td>{`${team.startTime} - ${team.endTime}`}</td>
                   <td>{new Date(team.createdAt).toLocaleDateString()}</td>
                   <td>{new Date(team.updatedAt).toLocaleDateString()}</td>
