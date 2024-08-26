@@ -71,7 +71,7 @@ function SoccerTeamModify() {
           'Authorization': token
         }
       });
-      if(result.data != null && result.data.status == 200) {
+      if(result.data != null && result.data.status === 200) {
         navigate('/');
       } else {
         alert(`[${result.code}] ${result.message}`);
