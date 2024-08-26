@@ -22,7 +22,8 @@ function SoccerTeamDetail() {
       }
     });
     const result = await response.json();
-    if (result.data !== null && result.status === 200) {
+    if(result.data !== null && result.status === 200) {
+      result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
       
       if (result.data.player.username === loggedInUsername) {  // 작성자와 로그인 사용자가 동일한지 확인
@@ -116,11 +117,14 @@ function SoccerTeamDetail() {
       </form>
       <div className="file_list">
         <label>팀 로고 / 팀 홍보물</label>
-        {/* {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
-          <a key={fileInfo.teamFileIdx} href={`http://localhost:8080/api/soccerTeam/file/${soccerTeam.teamIdx}/${fileInfo.teamFileIdx}`}>
-            {fileInfo.originalFileName} ({fileInfo.fileSize}kb)
+        {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
+          <>
+          <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
+            {fileInfo.originImageName} ({fileInfo.size}kb)
           </a>
-        ))} */}
+          <br />
+          </>
+        ))}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
       {isOwner && (  // 작성자만 수정 및 삭제 버튼 보이게
