@@ -96,14 +96,14 @@ function SoccerTeamWrite() {
     }
 
     const data = new FormData();
-    data.append('data', (JSON.stringify(formData), { type: 'application/json' }));
+    data.append('data', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
     Array.from(files).forEach(file => {
       data.append('files', file);
     });
 
     try {
       const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-      await axios.post('http://localhost:8080/api/soccerTeam/write', formData, {
+      await axios.post('http://localhost:8080/api/soccerTeam/write', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': token // Add the token here
@@ -170,7 +170,7 @@ function SoccerTeamWrite() {
             {errors.endTime && <p className="error">{errors.endTime}</p>}
             <tr>
               <td>운영 기간</td>
-              <td><input type="number" name="period" value={formData.period} onChange={handleChange} required /></td>
+              <td><input type="number" name="period" value={formData.period} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>휴대전화 (숫자만 입력)</td>
@@ -188,23 +188,23 @@ function SoccerTeamWrite() {
             {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
             <tr>
               <td>팀 연령대</td>
-              <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} required /></td>
+              <td><input type="number" name="ageAverage" value={formData.ageAverage} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션</td>
-              <td><input type="text" name="needPosition" value={formData.needPosition} onChange={handleChange} required /></td>
+              <td><input type="text" name="needPosition" value={formData.needPosition} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션 수</td>
-              <td><input type="number" name="needPositionCnt" value={formData.needPositionCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="needPositionCnt" value={formData.needPositionCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>선출 수</td>
-              <td><input type="number" name="athleteCnt" value={formData.athleteCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="athleteCnt" value={formData.athleteCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>팀 소개</td>
-              <td><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
+              <td><textarea name="contents" value={formData.contents} onChange={handleChange}></textarea></td>
             </tr>
           </tbody>
         </table>

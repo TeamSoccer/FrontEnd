@@ -19,6 +19,7 @@ function SoccerTeamDetail() {
     })
     const result = await response.json();
     if(result.data !== null && result.status === 200) {
+      result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
     } else {
       alert(`[${result.code}] ${result.message}`);
@@ -98,11 +99,14 @@ function SoccerTeamDetail() {
       </form>
       <div className="file_list">
         <label>팀 로고 / 팀 홍보물</label>
-        {/* {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
-          <a key={fileInfo.teamFileIdx} href={`http://localhost:8080/api/soccerTeam/file/${soccerTeam.teamIdx}/${fileInfo.teamFileIdx}`}>
-            {fileInfo.originalFileName} ({fileInfo.fileSize}kb)
+        {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
+          <>
+          <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
+            {fileInfo.originImageName} ({fileInfo.size}kb)
           </a>
-        ))} */}
+          <br />
+          </>
+        ))}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
       <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
