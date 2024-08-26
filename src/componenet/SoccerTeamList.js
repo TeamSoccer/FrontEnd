@@ -26,18 +26,6 @@ const SoccerTeamList = () => {
 
   console.log('Current teams state:', teams);
 
-  const handleSearch = () => {
-    const filteredTeams = teams.filter(team => {
-      if (searchType === 'teamName') {
-        return team.name.toLowerCase().includes(searchTerm.toLowerCase());
-      } else if (searchType === 'region') {
-        return team.region.toLowerCase().includes(searchTerm.toLowerCase());
-      }
-      return true;
-    });
-    setTeams(filteredTeams);
-  };
-
   return (
     <div className="list-container">
       <div className="header-container">
@@ -58,7 +46,6 @@ const SoccerTeamList = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
-          <button onClick={handleSearch} className="search-button">검색</button>
         </div>
 
         <h2 className="title">팀 게시판</h2>
