@@ -64,14 +64,14 @@ function SoccerTeamWrite() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     const data = new FormData();
-    data.append('data', (JSON.stringify(formData), { type: 'application/json' }));
+    data.append('data', new Blob([JSON.stringify(formData)], { type: 'application/json' }));
     Array.from(files).forEach(file => {
       data.append('files', file);
     });
 
     try {
       const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-      await axios.post('http://localhost:8080/api/soccerTeam/write', formData, {
+      await axios.post('http://localhost:8080/api/soccerTeam/write', data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': token // Add the token here
