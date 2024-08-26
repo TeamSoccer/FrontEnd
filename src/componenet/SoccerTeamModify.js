@@ -29,6 +29,7 @@ function SoccerTeamModify() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
+    console.log(location.state.soccerTeam);
     setTeamData(location.state.soccerTeam);
   }, [])
 
@@ -80,6 +81,7 @@ function SoccerTeamModify() {
   };
 
   const handleDayClick = (teamDay) => {
+    console.log(teamDay.day)
     setTeamData(prevState => {
       const { day } = prevState;
       if (day.includes(teamDay)) {
@@ -102,18 +104,20 @@ function SoccerTeamModify() {
     if (!validate()) {
       return;
     }
+    const data = new FormData();
+    data.append('data', new Blob([JSON.stringify(teamData)], { type: 'application/json' }));
+    Array.from(files).forEach(file => {
+      data.append('files', file);
+    });
 
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/api/soccerTeam`, {
-        method: 'PUT',
-        body: JSON.stringify(teamData),
+      const result = await axios.put(`http://localhost:8080/api/soccerTeam`, data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           'Authorization': token
         }
       });
-      const result = await response.json();
       if(result.data != null && result.data.status == 200) {
         navigate('/');
       } else {
@@ -181,7 +185,7 @@ function SoccerTeamModify() {
             {errors.endTime && <p className="error">{errors.endTime}</p>}
             <tr>
               <td>운영 기간</td>
-              <td><input type="number" name="period" value={teamData.period} onChange={handleChange} required /></td>
+              <td><input type="number" name="period" value={teamData.period} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>휴대전화 (숫자만 입력)</td>
@@ -199,23 +203,23 @@ function SoccerTeamModify() {
             {errors.phoneNumber && <p className="error">{errors.phoneNumber}</p>}
             <tr>
               <td>팀 연령대</td>
-              <td><input type="number" name="ageAverage" value={teamData.ageAverage} onChange={handleChange} required /></td>
+              <td><input type="number" name="ageAverage" value={teamData.ageAverage} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션</td>
-              <td><input type="text" name="needPosition" value={teamData.needPosition} onChange={handleChange} required /></td>
+              <td><input type="text" name="needPosition" value={teamData.needPosition} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>필요 포지션 수</td>
-              <td><input type="number" name="needPositionCnt" value={teamData.needPositionCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="needPositionCnt" value={teamData.needPositionCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>선출 수</td>
-              <td><input type="number" name="athleteCnt" value={teamData.athleteCnt} onChange={handleChange} required /></td>
+              <td><input type="number" name="athleteCnt" value={teamData.athleteCnt} onChange={handleChange} /></td>
             </tr>
             <tr>
               <td>팀 소개</td>
-              <td><textarea name="contents" value={teamData.contents} onChange={handleChange} required></textarea></td>
+              <td><textarea name="contents" value={teamData.contents} onChange={handleChange}></textarea></td>
             </tr>
           </tbody>
         </table>

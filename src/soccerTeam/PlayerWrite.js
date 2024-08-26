@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../css/PlayerWrite.css';
 
 function PlayerWrite() {
-  const { teamIdx } = useParams(); // teamIdx를 URL에서 받아옴
+  const { teamIdx } = useParams(); 
   const [formData, setFormData] = useState({
     title: '',
     playerName: '',
@@ -25,26 +25,25 @@ function PlayerWrite() {
     if (!formData.title.trim()) {
       newErrors.title = '제목을 입력해주세요.';
     }
-    if (!formData.playerName.trim()) {
-      newErrors.playerName = '이름을 입력해주세요.';
-    }
-    if (!formData.region.trim()) {
-      newErrors.region = '거주 지역을 입력해주세요.';
-    }
-    if (!formData.playerNumber || !/^\d{3}-\d{4}-\d{4}$/.test(formData.playerNumber)) {
-      newErrors.playerNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
-    }
-    if (!formData.playerOld || formData.playerOld < 10 || formData.playerOld > 100) {
-      newErrors.playerOld = '유효한 나이를 입력해주세요.';
-    }
-    if (!formData.playerPosition.trim()) {
-      newErrors.playerPosition = '포지션을 입력해주세요.';
-    }
+    // if (!formData.playerName.trim()) {
+    //   newErrors.playerName = '이름을 입력해주세요.';
+    // }
+    // if (!formData.region.trim()) {
+    //   newErrors.region = '거주 지역을 입력해주세요.';
+    // }
+    // if (!formData.playerNumber || !/^\d{3}-\d{4}-\d{4}$/.test(formData.playerNumber)) {
+    //   newErrors.playerNumber = '전화번호는 000-0000-0000 형식이어야 합니다.';
+    // }
+    // if (!formData.playerOld || formData.playerOld < 10 || formData.playerOld > 100) {
+    //   newErrors.playerOld = '유효한 나이를 입력해주세요.';
+    // }
+    // if (!formData.playerPosition.trim()) {
+    //   newErrors.playerPosition = '포지션을 입력해주세요.';
+    // }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -63,15 +62,15 @@ function PlayerWrite() {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:8080/api/soccerTeam/player/write', {
+      await axios.post('http://localhost:8080/api/enroll/write', {
         ...formData,
-        teamIdx
+        teamId: teamIdx
       }, {
         headers: {
           Authorization: 'Bearer ' + token
         }
       });
-      navigate(`/soccerTeam/${teamIdx}`); // 저장 후 팀 상세 페이지로 이동
+      navigate(`/soccerTeam/${teamIdx}`); 
     } catch (error) {
       console.error('Error adding player:', error);
     }
@@ -88,7 +87,7 @@ function PlayerWrite() {
               <td><input type="text" name="title" value={formData.title} onChange={handleChange} required /></td>
             </tr>
             {errors.title && <p className="error">{errors.title}</p>}
-            <tr>
+            {/* <tr>
               <td>본인 이름</td>
               <td><input type="text" name="playerName" value={formData.playerName} onChange={handleChange} required /></td>
             </tr>
@@ -120,7 +119,7 @@ function PlayerWrite() {
             <tr>
               <td>선출 여부</td>
               <td><input type="checkbox" name="playerAthlete" checked={formData.playerAthlete} onChange={handleChange} /></td>
-            </tr>
+            </tr> */}
             <tr>
               <td>자기소개</td>
               <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
