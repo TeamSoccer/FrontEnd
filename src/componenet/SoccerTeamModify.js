@@ -57,17 +57,20 @@ function SoccerTeamModify() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const data = new FormData();
+    data.append('data', new Blob([JSON.stringify(teamData)], { type: 'application/json' }));
+    Array.from(files).forEach(file => {
+      data.append('files', file);
+    });
+
     try {
       const token = localStorage.getItem("token");
-      const response = await fetch(`http://localhost:8080/api/soccerTeam`, {
-        method: 'PUT',
-        body: JSON.stringify(teamData),
+      const result = await axios.put(`http://localhost:8080/api/soccerTeam`, data, {
         headers: {
-          'Content-Type': 'application/json',
+          'Content-Type': 'multipart/form-data',
           'Authorization': token
         }
       });
-      const result = await response.json();
       if(result.data != null && result.data.status == 200) {
         navigate('/');
       } else {
