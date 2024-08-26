@@ -6,7 +6,8 @@ import '../css/CommonStyle.css';
 
 const SoccerTeamList = () => {
   const [teams, setTeams] = useState([]);
-  const [searchType, setSearchType] = useState('title');
+  const [filteredTeams, setFilteredTeams] = useState([]);
+  const [searchType, setSearchType] = useState('teamName');
   const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
@@ -15,33 +16,38 @@ const SoccerTeamList = () => {
         const token = localStorage.getItem("token");
         const response = await axios.get('http://localhost:8080/api/soccerTeam', { headers: { Authorization: token } });
         setTeams(response.data.data);
+        setFilteredTeams(response.data.data); // 초기 로드 시 전체 데이터를 filteredTeams에 설정
       } catch (error) {
         console.error('Error fetching teams:', error);
         setTeams([]);
+        setFilteredTeams([]); // 오류 발생 시 filteredTeams도 빈 배열로 설정
       }
     };
   
     fetchTeams();
   }, []);
 
-  console.log('Current teams state:', teams);
+  useEffect(() => {
+    handleSearch();
+  }, [searchType, searchTerm]);
 
-    const handleSearch = () => {
-    const filteredTeams = teams.filter(team => {
+  const handleSearch = () => {
+    const filtered = teams.filter(team => {
       if (searchType === 'teamName') {
         return team.name.toLowerCase().includes(searchTerm.toLowerCase());
       } else if (searchType === 'region') {
         return team.region.toLowerCase().includes(searchTerm.toLowerCase());
       }
-      return true;
+      return false;
     });
-    setTeams(filteredTeams);
+    console.log('Search term:', searchTerm); // 검색어를 콘솔에 출력
+    console.log('Filtered teams:', filtered); // 필터링된 결과를 콘솔에 출력
+    setFilteredTeams(filtered); // 필터링된 결과를 filteredTeams에 설정
   };
 
   return (
     <div className="list-container">
       <div className="header-container">
-
         <div className="search-actions">
           <select
             value={searchType}
@@ -58,7 +64,6 @@ const SoccerTeamList = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
             className="search-input"
           />
-          <button onClick={handleSearch} className="search-button">검색</button>
         </div>
 
         <h2 className="title">팀 게시판</h2>
@@ -79,8 +84,8 @@ const SoccerTeamList = () => {
             </tr>
           </thead>
           <tbody>
-            {Array.isArray(teams) && teams.length > 0 ? (
-              teams.map(team => (
+            {Array.isArray(filteredTeams) && filteredTeams.length > 0 ? (
+              filteredTeams.map(team => (
                 <tr key={team.id}>
                   <td>{team.id}</td>
                   <td>
