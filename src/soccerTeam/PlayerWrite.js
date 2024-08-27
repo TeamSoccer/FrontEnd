@@ -7,7 +7,8 @@ function PlayerWrite() {
   const { teamIdx } = useParams(); 
   const [formData, setFormData] = useState({
     title: '',
-    contents: ''
+    contents: '',
+    position: '',
   });
   const navigate = useNavigate();
   const [errors, setErrors] = useState({});
@@ -58,7 +59,7 @@ function PlayerWrite() {
 
   return (
     <div className="container">
-      <h2>선수 등록</h2>
+      <h2>입단 신청</h2>
       <form onSubmit={handleSubmit}>
         <table className="player_write">
           <tbody>
@@ -70,6 +71,10 @@ function PlayerWrite() {
             <tr>
               <td>자기소개</td>
               <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
+            </tr>
+            <tr>
+              <td>선호 포지션</td>
+              <td colSpan="2"><textarea name="position" value={formData.position} onChange={handleChange} required></textarea></td>
             </tr>
           </tbody>
         </table>

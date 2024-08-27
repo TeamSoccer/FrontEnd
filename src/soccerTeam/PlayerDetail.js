@@ -1,44 +1,46 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import '../css/PlayerDetail.css';
 import '../css/CommonStyle.css';
 
 function PlayerDetail() {
   const { playerIdx } = useParams();
   const navigate = useNavigate();
-  const [player, setPlayer] = useState(null);
+  const location = useLocation();
+  const { teamId } = location.state || {};
+  const [enroll, setEnroll] = useState(null);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
-      headers: { token }
+    axios.get(`http://localhost:8080/api/enroll/${playerIdx}`, {
+      headers: { Authorization: token }
     })
       .then(response => {
-        setPlayer(response.data);
+        setEnroll(response.data.data);
       })
       .catch(error => {
         console.error('Error fetching player details:', error);
       });
   }, [playerIdx]);
 
-  // if (!player) return <div>Loading...</div>;
+  if (!enroll) return <div>Loading...</div>;
 
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const token = localStorage.getItem("token");
-      axios.delete(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
-        headers: { Authorization: 'Bearer ' + token },
-        params: { teamIdx: player.teamIdx }
+      axios.delete(`http://localhost:8080/api/enroll/${enroll.id}`, {
+        headers: { Authorization: token },
+        params: { teamId: teamId }
       })
-        .then(() => navigate(`/soccerTeam/${player.teamIdx}`))
+        .then(() => navigate(`/soccerTeam/${teamId}`))
         .catch(error => console.error('Error deleting player:', error));
     }
   };
 
   return (
     <div className="player-container">
-      <h2>{"player.playerName"}</h2>
+      <h2>{enroll.player.name} 입단신청서</h2>
       <form id="frm" method="post" className='Pdetail-form'>
         <table className="player_list">
           <colgroup>
@@ -48,50 +50,50 @@ function PlayerDetail() {
           <tbody>
             <tr>
               <th scope="row">작성자</th>
-              <td>{"player.creatorId"}</td>
+              <td>{enroll.player.name}</td>
               <th scope="row">조회수</th>
-              <td>{"player.hitCnt"}</td>
+              <td>{enroll.hitCnt}</td>
               <th scope="row">작성일</th>
-              <td>{"new Date(player.createdDatetime).toLocaleString()"}</td>
+              <td>{new Date(enroll.createdAt).toLocaleString()}</td>
               <th scope="row">수정일</th>
-              <td>{"new Date(player.updatedDatetime).toLocaleString()"}</td>
+              <td>{new Date(enroll.updatedAt).toLocaleString()}</td>
             </tr>
 
             <tr>
               <th scope="row">선수 이름</th>
-              <td>{"player.playerName"}</td>
+              <td>{enroll.player.name}</td>
               <th scope="row">지역</th>
-              <td>{"player.region"}</td>
+              <td>{enroll.player.region}</td>
               <th scope="row">나이</th>
-              <td>{"player.playerOld"}</td>
+              <td>{enroll.player.age}</td>
               <th scope="row">구력</th>
-              <td>{"player.playerPeriod"}</td>
+              <td>{enroll.player.period}</td>
 
             </tr>
             <tr>
               <th scope="row">선출 여부</th>
-              <td>{"player.playerAthlete ? 'O' : 'X'"}</td>
+              <td>{enroll.playerAthlete ? 'O' : 'X'}</td>
               <th scope="row">포지션</th>
-              <td>{"player.playerPosition"}</td>
+              <td>{enroll.position}</td>
               <th scope="row">연락처</th>
-              <td colSpan="3">{"player.playerNumber"}</td>
+              <td colSpan="3">{enroll.player.phoneNumber}</td>
             </tr>
             <tr>
 
             </tr>
             <tr>
               <th scope="row">제목</th>
-              <td colSpan="7">{"player.title"}</td>
+              <td colSpan="7">{enroll.title}</td>
             </tr>
             <tr>
               <th scope="row">내용</th>
-              <td colSpan="7">{"player.contents"}</td>
+              <td colSpan="7">{enroll.content}</td>
             </tr>
           </tbody>
         </table>
       </form>
-      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${player.teamIdx}`)}>목록으로</button>
-      <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`)}>수정하기</button>
+      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${teamId}`)}>목록으로</button>
+      <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`, {state: {enroll}})}>수정하기</button>
       <button className="btnPD" onClick={handleDelete}>삭제하기</button>
     </div>
   );
