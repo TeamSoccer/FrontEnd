@@ -21,15 +21,13 @@ function App() {
     }
   }, []);
 
-  const handleLogin = (token, username) => {
+  const handleLogin = (token) => {
     localStorage.setItem('token', token);  // 토큰을 localStorage에 저장
-    localStorage.setItem('username', username); // username을 localStorage에 저장
     setIsLoggedIn(true);
   };
 
   const handleLogout = () => {
     localStorage.removeItem('token');  // localStorage에서 토큰 삭제
-    localStorage.removeItem('username');  // localStorage에서 username 삭제
     setIsLoggedIn(false);
   };
 

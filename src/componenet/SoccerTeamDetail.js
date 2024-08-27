@@ -12,7 +12,6 @@ function SoccerTeamDetail() {
   const [isOwner, setIsOwner] = useState(false); // 작성자 여부 확인 상태
 
   const token = localStorage.getItem('token');
-  const loggedInUsername = localStorage.getItem('username');
   const isLoggedIn = !!token; // 로그인 여부를 토큰 존재로 확인
 
   const getData = async() => {
@@ -27,11 +26,8 @@ function SoccerTeamDetail() {
       result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
 
-      // 디버깅용 콘솔 출력
-      console.log("Logged In Username:", loggedInUsername);
-      console.log("Soccer Team Username:", result.data.player.username);
-      
-      if (result.data.player.username === loggedInUsername) {  // 작성자와 로그인 사용자가 동일한지 확인
+      // 팀 소유자 여부 확인
+      if (result.checkResult === "YES") {
         setIsOwner(true);
       }
     } else {
@@ -39,16 +35,15 @@ function SoccerTeamDetail() {
       navigate("/");
       console.error('Error fetching soccer team details:', response.error);
     }
-  };
+};
 
   // 요일 순서를 정의합니다.
-  // const sortDays = (daysString) => {
-  //   if (!daysString) return '';
-  //   const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
-  //   const daysArray = daysString.split(',');  // 문자열을 배열로 변환
-  //   const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));  // 요일 정렬
-  //   return sortedDaysArray.join(', ');  // 다시 문자열로 변환
-  // };
+  const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+  const sortDays = (daysArray) => {
+    if (!daysArray) return '';
+    const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+    return sortedDaysArray.join(', ');
+  };
 
   useEffect(() => {
     getData();
@@ -87,7 +82,7 @@ function SoccerTeamDetail() {
             </tr>
             <tr>
               <th scope="row">요일</th>
-              <td>{soccerTeam.day}</td>
+              <td>{sortDays(soccerTeam.day)}</td>
               <th scope="row">시작 시간</th>
               <td>{soccerTeam.startTime}</td>
               <th scope="row">종료 시간</th>

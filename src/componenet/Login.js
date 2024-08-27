@@ -18,12 +18,15 @@ function Login({ onLogin }) {
         password,
       }, { withCredentials: true });
 
-      console.log('Login Response:', response.data);  // 응답 데이터 콘솔에 출력
+      // console.log('Login Response:', response);  // 서버 응답 출력
 
-      const token = response.data.token;
-      //const loggedInUsername = response.data.username; // 서버 응답에 포함된 username 저장
+      // 응답 헤더에서 토큰 추출
+      const token = response.headers['authorization'];
 
-      onLogin(token, username);  // 성공 시 onLogin 호출하여 App.js에서 상태 업데이트
+      localStorage.setItem('token', token);
+      // console.log('Received Token:', token); // 토큰 확인용 로그
+
+      onLogin(token);  // 성공 시 onLogin 호출하여 App.js에서 상태 업데이트
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
