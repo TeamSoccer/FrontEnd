@@ -11,24 +11,24 @@ function PlayerDetail() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
-      headers: { token }
+    axios.get(`http://localhost:8080/api/enroll/${playerIdx}`, {
+      headers: { Authorization: token }
     })
       .then(response => {
-        setPlayer(response.data);
+        setPlayer(response.data.data);
       })
       .catch(error => {
         console.error('Error fetching player details:', error);
       });
   }, [playerIdx]);
 
-  // if (!player) return <div>Loading...</div>;
+  if (!player) return <div>Loading...</div>;
 
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const token = localStorage.getItem("token");
-      axios.delete(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
-        headers: { Authorization: 'Bearer ' + token },
+      axios.delete(`http://localhost:8080/api/enroll/${playerIdx}`, {
+        headers: { Authorization: token },
         params: { teamIdx: player.teamIdx }
       })
         .then(() => navigate(`/soccerTeam/${player.teamIdx}`))
@@ -38,7 +38,7 @@ function PlayerDetail() {
 
   return (
     <div className="player-container">
-      <h2>{"player.playerName"}</h2>
+      <h2>{player.player.name} 입단신청서</h2>
       <form id="frm" method="post" className='Pdetail-form'>
         <table className="player_list">
           <colgroup>
@@ -48,50 +48,50 @@ function PlayerDetail() {
           <tbody>
             <tr>
               <th scope="row">작성자</th>
-              <td>{"player.creatorId"}</td>
+              <td>{player.player.name}</td>
               <th scope="row">조회수</th>
-              <td>{"player.hitCnt"}</td>
+              <td>{player.hitCnt}</td>
               <th scope="row">작성일</th>
-              <td>{"new Date(player.createdDatetime).toLocaleString()"}</td>
+              <td>{new Date(player.createdAt).toLocaleString()}</td>
               <th scope="row">수정일</th>
-              <td>{"new Date(player.updatedDatetime).toLocaleString()"}</td>
+              <td>{new Date(player.updatedAt).toLocaleString()}</td>
             </tr>
 
             <tr>
               <th scope="row">선수 이름</th>
-              <td>{"player.playerName"}</td>
+              <td>{player.player.name}</td>
               <th scope="row">지역</th>
-              <td>{"player.region"}</td>
+              <td>{player.player.region}</td>
               <th scope="row">나이</th>
-              <td>{"player.playerOld"}</td>
+              <td>{player.player.age}</td>
               <th scope="row">구력</th>
-              <td>{"player.playerPeriod"}</td>
+              <td>{player.player.period}</td>
 
             </tr>
             <tr>
               <th scope="row">선출 여부</th>
-              <td>{"player.playerAthlete ? 'O' : 'X'"}</td>
+              <td>{player.playerAthlete ? 'O' : 'X'}</td>
               <th scope="row">포지션</th>
-              <td>{"player.playerPosition"}</td>
+              <td>{player.role}</td>
               <th scope="row">연락처</th>
-              <td colSpan="3">{"player.playerNumber"}</td>
+              <td colSpan="3">{player.player.phoneNumber}</td>
             </tr>
             <tr>
 
             </tr>
             <tr>
               <th scope="row">제목</th>
-              <td colSpan="7">{"player.title"}</td>
+              <td colSpan="7">{player.title}</td>
             </tr>
             <tr>
               <th scope="row">내용</th>
-              <td colSpan="7">{"player.contents"}</td>
+              <td colSpan="7">{player.content}</td>
             </tr>
           </tbody>
         </table>
       </form>
-      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${player.teamIdx}`)}>목록으로</button>
-      <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`)}>수정하기</button>
+      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${player.teamId}`)}>목록으로</button>
+      <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`, {state: {player}})}>수정하기</button>
       <button className="btnPD" onClick={handleDelete}>삭제하기</button>
     </div>
   );
