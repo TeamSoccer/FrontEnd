@@ -16,6 +16,7 @@ function PlayerDetail() {
     })
       .then(response => {
         setPlayer(response.data.data);
+        console.log(response.data)
       })
       .catch(error => {
         console.error('Error fetching player details:', error);
@@ -72,7 +73,7 @@ function PlayerDetail() {
               <th scope="row">선출 여부</th>
               <td>{player.playerAthlete ? 'O' : 'X'}</td>
               <th scope="row">포지션</th>
-              <td>{player.role}</td>
+              <td>{player.position}</td>
               <th scope="row">연락처</th>
               <td colSpan="3">{player.player.phoneNumber}</td>
             </tr>

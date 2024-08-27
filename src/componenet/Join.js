@@ -12,9 +12,10 @@ function Join() {
     name: '',
     email: '',
     phoneNumber: '',
-    age: '',
+    age: '',  
     period: '',
     athlete: false,
+    region: '',
   });
 
   const [errors, setErrors] = useState({});
@@ -43,6 +44,9 @@ function Join() {
     }
     if (!formData.age || formData.age < 10 || formData.age > 100) {
       newErrors.age = '유효한 나이를 입력해주세요.';
+    }
+    if (!formData.region.trim()) {
+      newErrors.region = '지역을 입력해주세요.';
     }
 
     setErrors(newErrors);
@@ -85,6 +89,7 @@ function Join() {
       }
     } catch (error) {
       console.error('Registration error:', error);
+      console.log(error.response?.data);
       alert('Registration failed');
     }
   };
@@ -172,6 +177,13 @@ function Join() {
             name="period"
             placeholder="구력을 입력하세요."
             value={formData.period}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="region"
+            placeholder="지역을 입력하세요."
+            value={formData.region}
             onChange={handleChange}
           />
           <div className="checkbox-container">

@@ -140,6 +140,7 @@ function SoccerTeamDetail() {
         <table className="player_list">
           <thead>
             <tr>
+              <th>포지션</th>
               <th>선출 여부</th>
               <th>선수 이름</th>
               <th>제목</th>
@@ -152,6 +153,7 @@ function SoccerTeamDetail() {
             {playerList.length > 0 ? (
               playerList.map(player => (
                 <tr key={player.id}>
+                  <td>{player.position}</td>
                   <td>{player.athlete ? 'O' : 'X'}</td>
                   <td><a href={`/playerDetail/${player.id}`}>{player.playerName}</a></td>
                   <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
