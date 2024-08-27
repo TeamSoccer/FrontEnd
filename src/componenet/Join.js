@@ -6,16 +6,16 @@ import '../css/CommonStyle.css';
 
 function Join() {
   const [formData, setFormData] = useState({
+    name: '',
+    email: '',
     username: '',
     password: '',
     passwordConfirm: '',
-    name: '',
-    email: '',
     phoneNumber: '',
-    age: '',  
+    age: '',
     period: '',
-    athlete: false,
     region: '',
+    athlete: false,
   });
 
   const [errors, setErrors] = useState({});
@@ -44,9 +44,6 @@ function Join() {
     }
     if (!formData.age || formData.age < 10 || formData.age > 100) {
       newErrors.age = '유효한 나이를 입력해주세요.';
-    }
-    if (!formData.region.trim()) {
-      newErrors.region = '지역을 입력해주세요.';
     }
 
     setErrors(newErrors);
@@ -89,7 +86,6 @@ function Join() {
       }
     } catch (error) {
       console.error('Registration error:', error);
-      console.log(error.response?.data);
       alert('Registration failed');
     }
   };
