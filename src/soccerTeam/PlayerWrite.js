@@ -18,6 +18,9 @@ function PlayerWrite() {
     if (!formData.title.trim()) {
       newErrors.title = '제목을 입력해주세요.';
     }
+    if (!formData.contents.trim()) {
+      newErrors.contents = '자기소개를 입력해주세요.';
+    }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -44,7 +47,7 @@ function PlayerWrite() {
         ...formData,
         teamId: teamIdx,
         title: formData.title,
-        content: formData.contents
+        contents: formData.contents
       }, {
         headers: {
           'Authorization': token
@@ -71,6 +74,7 @@ function PlayerWrite() {
               <td>자기소개</td>
               <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
             </tr>
+            {errors.contents && <p className="error">{errors.contents}</p>}
           </tbody>
         </table>
         <div className="btnP-container">
