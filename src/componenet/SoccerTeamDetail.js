@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import '../css/CommonStyle.css';
 import '../css/SoccerTeamDetail.css';
 
@@ -155,8 +157,8 @@ function SoccerTeamDetail() {
                 <tr key={player.id}>
                   <td>{player.position}</td>
                   <td>{player.athlete ? 'O' : 'X'}</td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.playerName}</a></td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.playerName}</Link></td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.title}</Link></td>
                   <td>{player.phoneNumber}</td>
                   <td>{player.createdAt}</td>
                   <td>{player.updatedAt}</td>

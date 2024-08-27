@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import '../css/PlayerDetail.css';
 import '../css/CommonStyle.css';
 
 function PlayerDetail() {
   const { playerIdx } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const { teamId } = location.state || {};
   const [enroll, setEnroll] = useState(null);
 
   useEffect(() => {
@@ -27,11 +29,11 @@ function PlayerDetail() {
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const token = localStorage.getItem("token");
-      axios.delete(`http://localhost:8080/api/enroll/${playerIdx}`, {
+      axios.delete(`http://localhost:8080/api/enroll/${enroll.id}`, {
         headers: { Authorization: token },
-        params: { teamIdx: enroll.teamIdx }
+        params: { teamId: teamId }
       })
-        .then(() => navigate(`/soccerTeam/${enroll.teamIdx}`))
+        .then(() => navigate(`/soccerTeam/${teamId}`))
         .catch(error => console.error('Error deleting player:', error));
     }
   };
@@ -90,7 +92,7 @@ function PlayerDetail() {
           </tbody>
         </table>
       </form>
-      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${enroll.teamId}`)}>목록으로</button>
+      <button className="btnPD" onClick={() => navigate(`/soccerTeam/${teamId}`)}>목록으로</button>
       <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`, {state: {enroll}})}>수정하기</button>
       <button className="btnPD" onClick={handleDelete}>삭제하기</button>
     </div>
