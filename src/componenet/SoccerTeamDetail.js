@@ -27,9 +27,26 @@ function SoccerTeamDetail() {
       console.error('Error fetching soccer team details:', response.error);
     }
   }
+
+  const getPlayerList = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`http://localhost:8080/api/enroll/team/${teamIdx}`, {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (response.data && response.status === 200) {
+        setPlayerList(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching player list:', error);
+    }
+  }
   
   useEffect(() => {
     getData();
+    getPlayerList();
   }, [teamIdx]);
 
   if (!soccerTeam) return <div>Loading...</div>;
@@ -61,7 +78,7 @@ function SoccerTeamDetail() {
               <td>{soccerTeam.name}</td>
               <th scope="row">작성자</th>
               <td>{soccerTeam.player.name}</td>
-              <th scope="row">연락처</th>
+              <th scope="row">전화번호</th>
               <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
@@ -126,7 +143,7 @@ function SoccerTeamDetail() {
               <th>선출 여부</th>
               <th>선수 이름</th>
               <th>제목</th>
-              <th>지역</th>
+              <th>전화번호</th>
               <th>등록일</th>
               <th>수정일</th>
             </tr>
@@ -136,9 +153,9 @@ function SoccerTeamDetail() {
               playerList.map(player => (
                 <tr key={player.id}>
                   <td>{player.athlete ? 'O' : 'X'}</td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.name}</a></td>
+                  <td><a href={`/playerDetail/${player.id}`}>{player.playerName}</a></td>
                   <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
-                  <td>{player.region}</td>
+                  <td>{player.phoneNumber}</td>
                   <td>{player.createdAt}</td>
                   <td>{player.updatedAt}</td>
                 </tr>
