@@ -4,15 +4,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import '../css/CommonStyle.css';
 import '../css/SoccerTeamDetail.css';
 
-function SoccerTeamDetail() {
+function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
   const { teamIdx } = useParams();
   const navigate = useNavigate();
   const [soccerTeam, setSoccerTeam] = useState(null);
   const [playerList, setPlayerList] = useState([]);
   const [isOwner, setIsOwner] = useState(false); // 작성자 여부 확인 상태
-
-  const token = localStorage.getItem('token');
-  const isLoggedIn = !!token; // 로그인 여부를 토큰 존재로 확인
 
   const getData = async() => {
     const token = localStorage.getItem("token");
@@ -22,20 +19,18 @@ function SoccerTeamDetail() {
       }
     });
     const result = await response.json();
-    if(result.data !== null && result.status === 200) {
+    if (result.data !== null && result.status === 200) {
       result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
 
       // 팀 소유자 여부 확인
-      if (result.checkResult === "YES") {
-        setIsOwner(true);
-      }
+      setIsOwner(result.data.isOwner);
+
     } else {
       alert(`[${result.code}] ${result.message}`);
       navigate("/");
-      console.error('Error fetching soccer team details:', response.error);
     }
-};
+  };
 
   // 요일 순서를 정의합니다.
   const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
@@ -117,10 +112,10 @@ function SoccerTeamDetail() {
         <label>팀 로고 / 팀 홍보물</label>
         {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
           <>
-          <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
-            {fileInfo.originImageName} ({fileInfo.size}kb)
-          </a>
-          <br />
+            <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
+              {fileInfo.originImageName} ({fileInfo.size}kb)
+            </a>
+            <br />
           </>
         ))}
       </div>
@@ -129,13 +124,13 @@ function SoccerTeamDetail() {
         <>
           <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
           <button className="btn" onClick={() => {
-              if (window.confirm("정말 삭제하시겠습니까?")) {
-                const token = localStorage.getItem("token");
-                axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
-                  .then(() => navigate('/'))
-                  .catch(error => console.error('Error deleting soccer team:', error));
-              }
-            }}>삭제하기</button>
+            if (window.confirm("정말 삭제하시겠습니까?")) {
+              const token = localStorage.getItem("token");
+              axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
+                .then(() => navigate('/'))
+                .catch(error => console.error('Error deleting soccer team:', error));
+            }
+          }}>삭제하기</button>
         </>
       )}
       <div>
@@ -183,4 +178,4 @@ function SoccerTeamDetail() {
   );
 }
 
-export default SoccerTeamDetail;
+  export default SoccerTeamDetail;

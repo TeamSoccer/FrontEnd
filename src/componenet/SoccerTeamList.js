@@ -23,7 +23,7 @@ const SoccerTeamList = ({ isLoggedIn, onLogout }) => {  // isLoggedIn과 onLogou
     };
   
     fetchTeams();
-  }, [navigate, onLogout]);
+  }, []);
 
   const handleLogoutClick = () => {  // 로그아웃 버튼 클릭 시 호출
     onLogout();  // App.js에서 전달된 onLogout 함수 호출

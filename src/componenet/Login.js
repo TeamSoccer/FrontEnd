@@ -18,13 +18,8 @@ function Login({ onLogin }) {
         password,
       }, { withCredentials: true });
 
-      // console.log('Login Response:', response);  // 서버 응답 출력
-
       // 응답 헤더에서 토큰 추출
       const token = response.headers['authorization'];
-
-      localStorage.setItem('token', token);
-      // console.log('Received Token:', token); // 토큰 확인용 로그
 
       onLogin(token);  // 성공 시 onLogin 호출하여 App.js에서 상태 업데이트
       navigate('/');
