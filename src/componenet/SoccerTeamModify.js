@@ -112,7 +112,7 @@ function SoccerTeamModify() {
 
     try {
       const token = localStorage.getItem("token");
-      const result = await axios.put(`http://localhost:8080/api/soccerTeam`, data, {
+      const result = await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': token

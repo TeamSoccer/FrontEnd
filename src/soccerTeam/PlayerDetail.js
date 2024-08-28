@@ -11,7 +11,7 @@ function PlayerDetail() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/player/${playerIdx}`, {
       headers: { token }
     })
       .then(response => {
@@ -27,7 +27,7 @@ function PlayerDetail() {
   const handleDelete = () => {
     if (window.confirm("정말 삭제하시겠습니까?")) {
       const token = localStorage.getItem("token");
-      axios.delete(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
+      axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/player/${playerIdx}`, {
         headers: { Authorization: 'Bearer ' + token },
         params: { teamIdx: player.teamIdx }
       })

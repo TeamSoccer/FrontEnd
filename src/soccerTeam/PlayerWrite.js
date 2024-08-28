@@ -62,7 +62,7 @@ function PlayerWrite() {
 
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:8080/api/enroll/write', {
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/enroll/write`, {
         ...formData,
         teamId: teamIdx
       }, {

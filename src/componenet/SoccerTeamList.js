@@ -13,7 +13,7 @@ const SoccerTeamList = () => {
     const fetchTeams = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get('http://localhost:8080/api/soccerTeam', { headers: { Authorization: token } });
+        const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam`, { headers: { Authorization: token } });
         setTeams(response.data.data);
       } catch (error) {
         console.error('Error fetching teams:', error);

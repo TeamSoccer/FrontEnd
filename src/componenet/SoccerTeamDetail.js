@@ -12,7 +12,7 @@ function SoccerTeamDetail() {
 
   const getData = async() => {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:8080/api/soccerTeam/${teamIdx}`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/${teamIdx}`, {
       headers: {
         Authorization: token
       }
@@ -101,7 +101,7 @@ function SoccerTeamDetail() {
         <label>팀 로고 / 팀 홍보물</label>
         {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
           <>
-          <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
+          <a key={fileInfo.id} href={`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/file/${fileInfo.id}`}>
             {fileInfo.originImageName} ({fileInfo.size}kb)
           </a>
           <br />
@@ -113,7 +113,7 @@ function SoccerTeamDetail() {
       <button className="btn" onClick={() => {
         if (window.confirm("정말 삭제하시겠습니까?")) {
           const token = localStorage.getItem("token");
-          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
+          axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
             .then(() => navigate('/'))
             .catch(error => console.error('Error deleting soccer team:', error));
         }
