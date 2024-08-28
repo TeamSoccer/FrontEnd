@@ -36,9 +36,15 @@ function PlayerDetail() {
             navigate(`/soccerTeam/${teamId}`);
         })
         .catch(error => {
-                console.error('Error deleting player:', error);
-                alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
-        });
+          if(error.response && error.response.status === 403){
+            alert("삭제할 권한이 없습니다.");
+          }
+          else{
+            console.error('Error deleting player:', error);
+            alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
+          }
+        }
+        );
     }
 };
 
