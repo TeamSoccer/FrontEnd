@@ -70,11 +70,7 @@ function PlayerModify() {
     } catch (error) {
       if (error.response) {
         const errorMessage = error.response.data.message;
-        if (errorMessage === 'ONLY_OWNER_CAN_MODIFY') {
-          alert('본인의 입단 신청서만 수정 가능합니다');
-        } else {
-          alert(errorMessage || '알 수 없는 오류가 발생했습니다.');
-        }
+        alert(errorMessage || '알 수 없는 오류가 발생했습니다.');
       } else {
         console.error('Error updating player:', error);
         alert('서버에 연결할 수 없습니다. 나중에 다시 시도해 주세요.');
