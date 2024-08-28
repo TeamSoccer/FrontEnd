@@ -103,7 +103,7 @@ function SoccerTeamWrite() {
 
     try {
       const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-      await axios.post('http://localhost:8080/api/soccerTeam/write', data, {
+      await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/write`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
           'Authorization': token // Add the token here

@@ -65,7 +65,7 @@ function PlayerModify() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:8080/api/enroll`, trimmedData, {
+      await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/enroll`, trimmedData, {
         headers: { 'Authorization': token }
       });
       navigate(`/playerDetail/${playerIdx}`, { state: { teamId } });
