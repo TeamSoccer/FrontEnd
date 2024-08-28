@@ -37,7 +37,7 @@ function PlayerDetail() {
         })
         .catch(error => {
           if(error.response && error.response.status === 401){
-            alert("삭제할 권한이 없습니다.");
+            alert(error.response.data.message);
           }
           else{
             console.error('Error deleting player:', error);
