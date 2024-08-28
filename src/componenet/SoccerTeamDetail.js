@@ -6,11 +6,12 @@ import { Link } from 'react-router-dom';
 import '../css/CommonStyle.css';
 import '../css/SoccerTeamDetail.css';
 
-function SoccerTeamDetail() {
+function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
   const { teamIdx } = useParams();
   const navigate = useNavigate();
   const [soccerTeam, setSoccerTeam] = useState(null);
   const [playerList, setPlayerList] = useState([]);
+  const [isOwner, setIsOwner] = useState(false); // 작성자 여부 확인 상태
 
   const getData = async() => {
     const token = localStorage.getItem("token");
@@ -18,17 +19,28 @@ function SoccerTeamDetail() {
       headers: {
         Authorization: token
       }
-    })
+    });
     const result = await response.json();
-    if(result.data !== null && result.status === 200) {
+    if (result.data !== null && result.status === 200) {
       result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
+
+      // 팀 소유자 여부 확인
+      setIsOwner(result.data.isOwner);
+
     } else {
       alert(`[${result.code}] ${result.message}`);
-      navigate("/")
-      console.error('Error fetching soccer team details:', response.error);
+      navigate("/");
     }
   }
+
+  // 요일 순서를 정의합니다.
+  const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+  const sortDays = (daysArray) => {
+    if (!daysArray) return '';
+    const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+    return sortedDaysArray.join(', ');
+  };
 
   const getPlayerList = async () => {
     const token = localStorage.getItem("token");
@@ -62,7 +74,6 @@ function SoccerTeamDetail() {
           <colgroup>
             <col width="10%" />
             <col width="10%" />
-            
           </colgroup>
           <tbody>
             <tr>
@@ -84,8 +95,8 @@ function SoccerTeamDetail() {
               <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
-            <th scope="row">요일</th>
-              <td>{soccerTeam.day}</td>
+              <th scope="row">요일</th>
+              <td>{sortDays(soccerTeam.day)}</td>
               <th scope="row">시작 시간</th>
               <td>{soccerTeam.startTime}</td>
               <th scope="row">종료 시간</th>
@@ -120,23 +131,27 @@ function SoccerTeamDetail() {
         <label>팀 로고 / 팀 홍보물</label>
         {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
           <>
-          <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
-            {fileInfo.originImageName} ({fileInfo.size}kb)
-          </a>
-          <br />
+            <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
+              {fileInfo.originImageName} ({fileInfo.size}kb)
+            </a>
+            <br />
           </>
         ))}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
-      <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
-      <button className="btn" onClick={() => {
-        if (window.confirm("정말 삭제하시겠습니까?")) {
-          const token = localStorage.getItem("token");
-          axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
-            .then(() => navigate('/'))
-            .catch(error => console.error('Error deleting soccer team:', error));
-        }
-      }}>삭제하기</button>
+      {isOwner && (  // 작성자만 수정 및 삭제 버튼 보이게
+        <>
+          <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
+          <button className="btn" onClick={() => {
+            if (window.confirm("정말 삭제하시겠습니까?")) {
+              const token = localStorage.getItem("token");
+              axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
+                .then(() => navigate('/'))
+                .catch(error => console.error('Error deleting soccer team:', error));
+            }
+          }}>삭제하기</button>
+        </>
+      )}
       <div>
         <h3 className='detail-h3'>선수 목록</h3>
         <table className="player_list">
@@ -171,10 +186,17 @@ function SoccerTeamDetail() {
             )}
           </tbody>
         </table>
-        <button className="btn" onClick={() => navigate(`/playerWrite/${teamIdx}`)}>입단신청</button>
+        <button className="btn" onClick={() => {
+          if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');  // 로그인하지 않은 경우 로그인 페이지로 이동
+          } else {
+            navigate(`/playerWrite/${teamIdx}`);
+          }
+        }}>입단신청</button>
       </div>
     </div>
   );
 }
 
-export default SoccerTeamDetail;
+  export default SoccerTeamDetail;
