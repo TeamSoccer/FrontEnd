@@ -20,12 +20,7 @@ function PlayerModify() {
 
   useEffect(() => {
     if (location.state && location.state.enroll) {
-      setFormData({
-        id: location.state.enroll.id,
-        title: location.state.enroll.title,
-        content: location.state.enroll.content,
-        position: location.state.enroll.position
-      });
+      setFormData(location.state.enroll);
     }
   }, [location.state]);
 
@@ -61,9 +56,16 @@ function PlayerModify() {
       return;
     }
 
+    const trimmedData = {
+      ...formData,
+      title: formData.title.trim(),
+      content: formData.content.trim(),
+      position: formData.position.trim()
+  };
+
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:8080/api/enroll`, formData, {
+      await axios.put(`http://localhost:8080/api/enroll`, trimmedData, {
         headers: { 'Authorization': token }
       });
       navigate(`/playerDetail/${playerIdx}`, { state: { teamId } });
