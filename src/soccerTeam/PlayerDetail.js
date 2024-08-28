@@ -36,7 +36,7 @@ function PlayerDetail() {
             navigate(`/soccerTeam/${teamId}`);
         })
         .catch(error => {
-          if(error.response && error.response.status === 403){
+          if(error.response && error.response.status === 401){
             alert("삭제할 권한이 없습니다.");
           }
           else{
