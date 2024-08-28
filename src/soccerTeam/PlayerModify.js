@@ -23,7 +23,7 @@ function PlayerModify() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
-    axios.get(`http://localhost:8080/api/soccerTeam/player/${playerIdx}`, {
+    axios.get(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/player/${playerIdx}`, {
       headers: { Authorization: 'Bearer ' + token }
     })
       .then(response => {
@@ -77,7 +77,7 @@ function PlayerModify() {
 
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:8080/api/soccerTeam/player/${playerIdx}/edit?teamIdx=${formData.teamIdx}`, formData, {
+      await axios.put(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/player/${playerIdx}/edit?teamIdx=${formData.teamIdx}`, formData, {
         headers: { Authorization: 'Bearer ' + token }
       });
       navigate(`/playerDetail/${playerIdx}`);

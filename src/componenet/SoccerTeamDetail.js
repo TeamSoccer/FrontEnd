@@ -15,7 +15,7 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
 
   const getData = async() => {
     const token = localStorage.getItem("token");
-    const response = await fetch(`http://localhost:8080/api/soccerTeam/${teamIdx}`, {
+    const response = await fetch(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/${teamIdx}`, {
       headers: {
         Authorization: token
       }
@@ -131,27 +131,23 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
         <label>팀 로고 / 팀 홍보물</label>
         {soccerTeam.fileInfoList && soccerTeam.fileInfoList.map(fileInfo => (
           <>
-            <a key={fileInfo.id} href={`http://localhost:8080/api/soccerTeam/file/${fileInfo.id}`}>
-              {fileInfo.originImageName} ({fileInfo.size}kb)
-            </a>
-            <br />
+          <a key={fileInfo.id} href={`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/file/${fileInfo.id}`}>
+            {fileInfo.originImageName} ({fileInfo.size}kb)
+          </a>
+          <br />
           </>
         ))}
       </div>
       <button className="btn" onClick={() => navigate('/')}>목록으로</button>
-      {isOwner && (  // 작성자만 수정 및 삭제 버튼 보이게
-        <>
-          <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
-          <button className="btn" onClick={() => {
-            if (window.confirm("정말 삭제하시겠습니까?")) {
-              const token = localStorage.getItem("token");
-              axios.delete(`http://localhost:8080/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
-                .then(() => navigate('/'))
-                .catch(error => console.error('Error deleting soccer team:', error));
-            }
-          }}>삭제하기</button>
-        </>
-      )}
+      <button className="btn" onClick={() => navigate(`/soccerTeamModify/${teamIdx}`, {state: {soccerTeam}})}>수정하기</button>
+      <button className="btn" onClick={() => {
+        if (window.confirm("정말 삭제하시겠습니까?")) {
+          const token = localStorage.getItem("token");
+          axios.delete(`${process.env.REACT_APP_SERVER_URL}/api/soccerTeam/${teamIdx}`, { headers: { Authorization: token }})
+            .then(() => navigate('/'))
+            .catch(error => console.error('Error deleting soccer team:', error));
+        }
+      }}>삭제하기</button>
       <div>
         <h3 className='detail-h3'>선수 목록</h3>
         <table className="player_list">

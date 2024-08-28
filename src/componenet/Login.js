@@ -30,7 +30,7 @@ function Login({ onLogin }) {
     }
 
     try {
-      const response = await axios.post(`http://localhost:8080/login?username=${username}&password=${password}`, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/login?username=${username}&password=${password}`, {
         username,
         password,
       }, { withCredentials: true });
