@@ -38,7 +38,7 @@ function App() {
         <Route path="/login" element={<Login onLogin={handleLogin} />} />
         <Route path="/" element={<SoccerTeamList isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/soccerTeam/write" element={<SoccerTeamWrite />} />
-        <Route path="/soccerTeam/:teamIdx" element={<SoccerTeamDetail />} />
+        <Route path="/soccerTeam/:teamIdx" element={<SoccerTeamDetail isLoggedIn={isLoggedIn}/>} />
         <Route path="/soccerTeamModify/:teamIdx" element={<SoccerTeamModify />} />
         <Route path="/playerWrite/:teamIdx" element={<PlayerWrite />} />
         <Route path="/playerDetail/:playerIdx" element={<PlayerDetail />} />

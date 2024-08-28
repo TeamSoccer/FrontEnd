@@ -29,7 +29,6 @@ function SoccerTeamModify() {
   const [errors, setErrors] = useState({});
 
   useEffect(() => {
-    console.log(location.state.soccerTeam);
     setTeamData(location.state.soccerTeam);
   }, [])
 
@@ -119,10 +118,10 @@ function SoccerTeamModify() {
         }
       });
       if(result.data != null && result.data.status === 200) {
-        navigate('/');
+        navigate(`/soccerTeam/${teamIdx}`);
       } else {
         alert(`[${result.code}] ${result.message}`);
-        navigate("/");
+        navigate(`/soccerTeam/${teamIdx}`);
       }
     } catch (error) {
       console.error('Error updating soccer team:', error);
