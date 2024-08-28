@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import '../css/CommonStyle.css';
 import '../css/SoccerTeamDetail.css';
 
-function SoccerTeamDetail() {
+function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
   const { teamIdx } = useParams();
   const navigate = useNavigate();
   const [soccerTeam, setSoccerTeam] = useState(null);
   const [playerList, setPlayerList] = useState([]);
+  const [isOwner, setIsOwner] = useState(false); // 작성자 여부 확인 상태
 
   const getData = async() => {
     const token = localStorage.getItem("token");
@@ -16,20 +19,48 @@ function SoccerTeamDetail() {
       headers: {
         Authorization: token
       }
-    })
+    });
     const result = await response.json();
-    if(result.data !== null && result.status === 200) {
+    if (result.data !== null && result.status === 200) {
       result.data.day = result.data.day.split(", ");
       setSoccerTeam(result.data);
+
+      // 팀 소유자 여부 확인
+      setIsOwner(result.data.isOwner);
+
     } else {
       alert(`[${result.code}] ${result.message}`);
-      navigate("/")
-      console.error('Error fetching soccer team details:', response.error);
+      navigate("/");
+    }
+  }
+
+  // 요일 순서를 정의합니다.
+  const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
+  const sortDays = (daysArray) => {
+    if (!daysArray) return '';
+    const sortedDaysArray = daysArray.sort((a, b) => dayOrder.indexOf(a) - dayOrder.indexOf(b));
+    return sortedDaysArray.join(', ');
+  };
+
+  const getPlayerList = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`http://localhost:8080/api/enroll/team/${teamIdx}`, {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (response.data && response.status === 200) {
+        setPlayerList(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching player list:', error);
     }
   }
   
   useEffect(() => {
     getData();
+    getPlayerList();
   }, [teamIdx]);
 
   if (!soccerTeam) return <div>Loading...</div>;
@@ -43,7 +74,6 @@ function SoccerTeamDetail() {
           <colgroup>
             <col width="10%" />
             <col width="10%" />
-            
           </colgroup>
           <tbody>
             <tr>
@@ -61,12 +91,12 @@ function SoccerTeamDetail() {
               <td>{soccerTeam.name}</td>
               <th scope="row">작성자</th>
               <td>{soccerTeam.player.name}</td>
-              <th scope="row">연락처</th>
+              <th scope="row">전화번호</th>
               <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
-            <th scope="row">요일</th>
-              <td>{soccerTeam.day}</td>
+              <th scope="row">요일</th>
+              <td>{sortDays(soccerTeam.day)}</td>
               <th scope="row">시작 시간</th>
               <td>{soccerTeam.startTime}</td>
               <th scope="row">종료 시간</th>
@@ -123,10 +153,11 @@ function SoccerTeamDetail() {
         <table className="player_list">
           <thead>
             <tr>
+              <th>포지션</th>
               <th>선출 여부</th>
               <th>선수 이름</th>
               <th>제목</th>
-              <th>지역</th>
+              <th>전화번호</th>
               <th>등록일</th>
               <th>수정일</th>
             </tr>
@@ -135,10 +166,11 @@ function SoccerTeamDetail() {
             {playerList.length > 0 ? (
               playerList.map(player => (
                 <tr key={player.id}>
+                  <td>{player.position}</td>
                   <td>{player.athlete ? 'O' : 'X'}</td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.name}</a></td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
-                  <td>{player.region}</td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.playerName}</Link></td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.title}</Link></td>
+                  <td>{player.phoneNumber}</td>
                   <td>{player.createdAt}</td>
                   <td>{player.updatedAt}</td>
                 </tr>
@@ -150,10 +182,17 @@ function SoccerTeamDetail() {
             )}
           </tbody>
         </table>
-        <button className="btn" onClick={() => navigate(`/playerWrite/${teamIdx}`)}>입단신청</button>
+        <button className="btn" onClick={() => {
+          if (!isLoggedIn) {
+            alert('로그인이 필요합니다.');
+            navigate('/login');  // 로그인하지 않은 경우 로그인 페이지로 이동
+          } else {
+            navigate(`/playerWrite/${teamIdx}`);
+          }
+        }}>입단신청</button>
       </div>
     </div>
   );
 }
 
-export default SoccerTeamDetail;
+  export default SoccerTeamDetail;

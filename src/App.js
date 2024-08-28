@@ -1,6 +1,5 @@
 import './App.css';
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Join from './componenet/Join';
 import Login from './componenet/Login';
@@ -13,12 +12,31 @@ import PlayerDetail from './soccerTeam/PlayerDetail';
 import PlayerModify from './soccerTeam/PlayerModify';
 
 function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      setIsLoggedIn(true);
+    }
+  }, []);
+
+  const handleLogin = (token) => {
+    localStorage.setItem('token', token);  // 토큰을 localStorage에 저장
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');  // localStorage에서 토큰 삭제
+    setIsLoggedIn(false);
+  };
+
   return (
     <Router>
       <Routes>
         <Route path="/join" element={<Join />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/" element={<SoccerTeamList />} />
+        <Route path="/login" element={<Login onLogin={handleLogin} />} />
+        <Route path="/" element={<SoccerTeamList isLoggedIn={isLoggedIn} onLogout={handleLogout} />} />
         <Route path="/soccerTeam/write" element={<SoccerTeamWrite />} />
         <Route path="/soccerTeam/:teamIdx" element={<SoccerTeamDetail />} />
         <Route path="/soccerTeamModify/:teamIdx" element={<SoccerTeamModify />} />
@@ -31,6 +49,3 @@ function App() {
 }
 
 export default App;
-
-
-

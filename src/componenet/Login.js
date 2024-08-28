@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import '../css/JoinLogin.css';
 import '../css/CommonStyle.css';
 
-function Login() {
+function Login({ onLogin }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -35,8 +35,10 @@ function Login() {
         password,
       }, { withCredentials: true });
 
-      localStorage.setItem('token', response.headers.getAuthorization());
-      
+      // 응답 헤더에서 토큰 추출
+      const token = response.headers['authorization'];
+
+      onLogin(token);  // 성공 시 onLogin 호출하여 App.js에서 상태 업데이트
       navigate('/');
     } catch (error) {
       console.error('Login error:', error);
@@ -47,7 +49,7 @@ function Login() {
   return (
     <div className="joinlogin-container">
       <h2>로그인</h2>
-      <form onSubmit={handleSubmit}  className='JoinLogin-form'>
+      <form onSubmit={handleSubmit} className='JoinLogin-form'>
         <input
           type="text"
           placeholder="ID를 입력하세요."

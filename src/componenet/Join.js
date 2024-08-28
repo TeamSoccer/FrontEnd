@@ -6,14 +6,15 @@ import '../css/CommonStyle.css';
 
 function Join() {
   const [formData, setFormData] = useState({
+    name: '',
+    email: '',
     username: '',
     password: '',
     passwordConfirm: '',
-    name: '',
-    email: '',
     phoneNumber: '',
     age: '',
     period: '',
+    region: '',
     athlete: false,
   });
 
@@ -172,6 +173,13 @@ function Join() {
             name="period"
             placeholder="구력을 입력하세요."
             value={formData.period}
+            onChange={handleChange}
+          />
+          <input
+            type="text"
+            name="region"
+            placeholder="지역을 입력하세요."
+            value={formData.region}
             onChange={handleChange}
           />
           <div className="checkbox-container">
