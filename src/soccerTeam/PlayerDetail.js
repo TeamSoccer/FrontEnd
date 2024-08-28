@@ -30,19 +30,14 @@ function PlayerDetail() {
     if (window.confirm("정말 삭제하시겠습니까?")) {
         const token = localStorage.getItem("token");
         axios.delete(`http://localhost:8080/api/enroll/${enroll.id}`, {
-            headers: { Authorization: token },
-            params: { teamId: teamId }
+            headers: { Authorization: token }
         })
         .then(() => {
             navigate(`/soccerTeam/${teamId}`);
         })
         .catch(error => {
-            if (error.response && error.response.status === 404) {
-                alert(error.response.data.message || "삭제할 권한이 없습니다.");
-            } else {
                 console.error('Error deleting player:', error);
                 alert("삭제 중 오류가 발생했습니다. 다시 시도해 주세요.");
-            }
         });
     }
 };
