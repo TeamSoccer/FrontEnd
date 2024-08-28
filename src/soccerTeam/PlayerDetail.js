@@ -36,7 +36,8 @@ function PlayerDetail() {
             navigate(`/soccerTeam/${teamId}`);
         })
         .catch(error => {
-          if(error.response && error.response.status === 401){
+          console.log(error.response)
+          if(error.response && error.response.data.status === 401){
             alert(error.response.data.message);
           }
           else{
