@@ -4,19 +4,25 @@ import { useNavigate, useParams } from 'react-router-dom';
 import '../css/PlayerWrite.css';
 
 function PlayerWrite() {
-  const { teamIdx } = useParams(); // teamIdx를 URL에서 받아옴
+  const { teamIdx } = useParams(); 
   const [formData, setFormData] = useState({
     title: '',
-    playerName: '',
-    region: '',
-    playerPeriod: '',
-    playerNumber: '',
-    playerOld: '',
-    playerPosition: '',
-    playerAthlete: false,
-    contents: ''
+    contents: '',
+    position: '',
   });
   const navigate = useNavigate();
+  const [errors, setErrors] = useState({});
+
+  const validate = () => {
+    const newErrors = {};
+
+    if (!formData.title.trim()) {
+      newErrors.title = '제목을 입력해주세요.';
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
@@ -28,17 +34,24 @@ function PlayerWrite() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    if (!validate()) {
+      return;
+    }
+
     const token = localStorage.getItem('token');
     try {
-      await axios.post('http://localhost:8080/api/soccerTeam/player/write', {
+      await axios.post('http://localhost:8080/api/enroll', {
         ...formData,
-        teamIdx
+        teamId: teamIdx,
+        title: formData.title,
+        content: formData.contents
       }, {
         headers: {
-          Authorization: 'Bearer ' + token
+          'Authorization': token
         }
       });
-      navigate(`/soccerTeam/${teamIdx}`); // 저장 후 팀 상세 페이지로 이동
+      navigate(`/soccerTeam/${teamIdx}`); 
     } catch (error) {
       console.error('Error adding player:', error);
     }
@@ -46,7 +59,7 @@ function PlayerWrite() {
 
   return (
     <div className="container">
-      <h2>선수 등록</h2>
+      <h2>입단 신청</h2>
       <form onSubmit={handleSubmit}>
         <table className="player_write">
           <tbody>
@@ -54,37 +67,14 @@ function PlayerWrite() {
               <td>제목</td>
               <td><input type="text" name="title" value={formData.title} onChange={handleChange} required /></td>
             </tr>
-            <tr>
-              <td>본인 이름</td>
-              <td><input type="text" name="playerName" value={formData.playerName} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>거주 지역</td>
-              <td><input type="text" name="region" value={formData.region} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>구력</td>
-              <td><input type="number" name="playerPeriod" value={formData.playerPeriod} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>연락처</td>
-              <td><input type="text" name="playerNumber" value={formData.playerNumber} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>나이</td>
-              <td><input type="number" name="playerOld" value={formData.playerOld} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>포지션</td>
-              <td><input type="text" name="playerPosition" value={formData.playerPosition} onChange={handleChange} required /></td>
-            </tr>
-            <tr>
-              <td>선출 여부</td>
-              <td><input type="checkbox" name="playerAthlete" checked={formData.playerAthlete} onChange={handleChange} /></td>
-            </tr>
+            {errors.title && <p className="error">{errors.title}</p>}
             <tr>
               <td>자기소개</td>
               <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
+            </tr>
+            <tr>
+              <td>선호 포지션</td>
+              <td colSpan="2"><textarea name="position" value={formData.position} onChange={handleChange} required></textarea></td>
             </tr>
           </tbody>
         </table>

@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import '../css/CommonStyle.css';
 import '../css/SoccerTeamDetail.css';
 
@@ -30,7 +32,7 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
       alert(`[${result.code}] ${result.message}`);
       navigate("/");
     }
-  };
+  }
 
   // 요일 순서를 정의합니다.
   const dayOrder = ['월', '화', '수', '목', '금', '토', '일'];
@@ -40,8 +42,25 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
     return sortedDaysArray.join(', ');
   };
 
+  const getPlayerList = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(`http://localhost:8080/api/enroll/team/${teamIdx}`, {
+        headers: {
+          Authorization: token
+        }
+      });
+      if (response.data && response.status === 200) {
+        setPlayerList(response.data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching player list:', error);
+    }
+  }
+  
   useEffect(() => {
     getData();
+    getPlayerList();
   }, [teamIdx]);
 
   if (!soccerTeam) return <div>Loading...</div>;
@@ -72,7 +91,7 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
               <td>{soccerTeam.name}</td>
               <th scope="row">작성자</th>
               <td>{soccerTeam.player.name}</td>
-              <th scope="row">연락처</th>
+              <th scope="row">전화번호</th>
               <td colSpan="3">{soccerTeam.phoneNumber}</td>
             </tr>
             <tr>
@@ -138,10 +157,11 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
         <table className="player_list">
           <thead>
             <tr>
+              <th>포지션</th>
               <th>선출 여부</th>
               <th>선수 이름</th>
               <th>제목</th>
-              <th>지역</th>
+              <th>전화번호</th>
               <th>등록일</th>
               <th>수정일</th>
             </tr>
@@ -150,10 +170,11 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
             {playerList.length > 0 ? (
               playerList.map(player => (
                 <tr key={player.id}>
+                  <td>{player.position}</td>
                   <td>{player.athlete ? 'O' : 'X'}</td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.name}</a></td>
-                  <td><a href={`/playerDetail/${player.id}`}>{player.title}</a></td>
-                  <td>{player.region}</td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.playerName}</Link></td>
+                  <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.title}</Link></td>
+                  <td>{player.phoneNumber}</td>
                   <td>{player.createdAt}</td>
                   <td>{player.updatedAt}</td>
                 </tr>
