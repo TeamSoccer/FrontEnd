@@ -2,7 +2,7 @@ name: production Deploy
 on:
   push:
     branches:
-      - feat-gitaction-cicd
+      - main
 
 env:
   DOCKERHUB_USERNAME: ywonchae1
