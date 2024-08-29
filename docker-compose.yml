@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  frontend:
+    image: ltt908/teamsoccer-client:0.1
+    container_name: teamsoccer-client
+    ports:
+      - "3000:80"
+    environment:
+      REACT_APP_API_URL: http://localhost:8080 
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
