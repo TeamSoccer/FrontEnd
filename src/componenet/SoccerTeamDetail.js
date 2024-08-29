@@ -45,7 +45,7 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
   const getPlayerList = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`${REACT_APP_SERVER_URL}/api/enroll/team/${teamIdx}`, {
+      const response = await axios.get(`${process.env.REACT_APP_SERVER_URL}/api/enroll/team/${teamIdx}`, {
         headers: {
           Authorization: token
         }
@@ -98,9 +98,9 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
               <th scope="row">요일</th>
               <td>{sortDays(soccerTeam.day)}</td>
               <th scope="row">시작 시간</th>
-              <td>{soccerTeam.startTime}</td>
+              <td>{soccerTeam.startTime.substring(0, 5)}</td>
               <th scope="row">종료 시간</th>
-              <td>{soccerTeam.endTime}</td>
+              <td>{soccerTeam.endTime.substring(0, 5)}</td>
               <th scope="row">운영 기간</th>
               <td>{soccerTeam.period}년</td>
               <th scope="row">팀 연령대</th>
@@ -175,8 +175,8 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
                   <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.playerName}</Link></td>
                   <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.title}</Link></td>
                   <td>{player.phoneNumber}</td>
-                  <td>{player.createdAt}</td>
-                  <td>{player.updatedAt}</td>
+                  <td>{new Date(player.createdAt).toLocaleString()}</td>
+                  <td>{new Date(player.updatedAt).toLocaleString()}</td>
                 </tr>
               ))
             ) : (
