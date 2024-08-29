@@ -73,8 +73,14 @@ function Join() {
       return;
     }
 
+    const trimmedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) =>
+        [key, typeof value === 'string' ? value.trim() : value]
+      )
+    );
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/join`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/join`, trimmedData, {
         headers: {
           'Content-Type': 'application/json',
         },

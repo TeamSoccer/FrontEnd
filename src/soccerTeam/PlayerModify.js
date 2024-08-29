@@ -56,12 +56,11 @@ function PlayerModify() {
       return;
     }
 
-    const trimmedData = {
-      ...formData,
-      title: formData.title.trim(),
-      content: formData.content.trim(),
-      position: formData.position.trim()
-  };
+    const trimmedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) =>
+        [key, typeof value === 'string' ? value.trim() : value]
+      )
+    );
 
     try {
       const token = localStorage.getItem("token");
