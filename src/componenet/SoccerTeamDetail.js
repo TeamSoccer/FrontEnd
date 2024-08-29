@@ -45,7 +45,7 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
   const getPlayerList = async () => {
     const token = localStorage.getItem("token");
     try {
-      const response = await axios.get(`http://localhost:8080/api/enroll/team/${teamIdx}`, {
+      const response = await axios.get(`${REACT_APP_SERVER_URL}/api/enroll/team/${teamIdx}`, {
         headers: {
           Authorization: token
         }
