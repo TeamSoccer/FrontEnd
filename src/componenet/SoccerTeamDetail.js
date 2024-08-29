@@ -175,8 +175,8 @@ function SoccerTeamDetail({ isLoggedIn }) { // isLoggedIn을 props로 받음
                   <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.playerName}</Link></td>
                   <td><Link to={`/playerDetail/${player.id}`} state={{ teamId: soccerTeam.id }}>{player.title}</Link></td>
                   <td>{player.phoneNumber}</td>
-                  <td>{player.createdAt}</td>
-                  <td>{player.updatedAt}</td>
+                  <td>{new Date(player.createdAt).toLocaleString()}</td>
+                  <td>{new Date(player.updatedAt).toLocaleString()}</td>
                 </tr>
               ))
             ) : (
