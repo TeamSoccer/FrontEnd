@@ -118,7 +118,7 @@ const SoccerTeamList = ({ isLoggedIn, onLogout }) => {  // isLoggedIn과 onLogou
                     <td>{team.name}</td>
                     <td>{team.region}</td>
                     <td>{sortDays(team.day)}</td>
-                    <td>{`${team.startTime} - ${team.endTime}`}</td>
+                    <td>{`${team.startTime.substring(0, 5)} - ${team.endTime.substring(0, 5)}`}</td>
                     <td>{new Date(team.createdAt).toLocaleDateString()}</td>
                     <td>{new Date(team.updatedAt).toLocaleDateString()}</td>
                   </tr>
