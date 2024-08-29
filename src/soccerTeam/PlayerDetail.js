@@ -10,6 +10,7 @@ function PlayerDetail() {
   const location = useLocation();
   const { teamId } = location.state || {};
   const [enroll, setEnroll] = useState(null);
+  const [isOwner, setIsOwner] = useState(false);  // 작성자 여부 상태 추가
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -17,7 +18,9 @@ function PlayerDetail() {
       headers: { Authorization: token }
     })
       .then(response => {
-        setEnroll(response.data.data);
+        const enrollData = response.data.data;
+        setEnroll(enrollData);
+        setIsOwner(enrollData.isOwner);  // 작성자인지 여부를 상태에 저장
       })
       .catch(error => {
         console.error('Error fetching player details:', error);
@@ -103,8 +106,12 @@ function PlayerDetail() {
         </table>
       </form>
       <button className="btnPD" onClick={() => navigate(`/soccerTeam/${teamId}`)}>목록으로</button>
-      <button className="btnPD" onClick={() => {navigate(`/playerModify/${playerIdx}`, { state: { enroll, teamId } });}}>수정하기</button>
-      <button className="btnPD" onClick={handleDelete}>삭제하기</button>
+      {isOwner && (  // 작성자만 수정하기와 삭제하기 버튼이 보이게 함
+        <>
+          <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`, { state: { enroll, teamId } })}>수정하기</button>
+          <button className="btnPD" onClick={handleDelete}>삭제하기</button>
+        </>
+      )}
     </div>
   );
 }

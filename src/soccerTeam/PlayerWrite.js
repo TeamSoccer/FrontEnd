@@ -79,7 +79,7 @@ function PlayerWrite() {
             <tr>
               <td>선호 포지션</td>
               <td colSpan="2"><textarea name="position" value={formData.position} onChange={handleChange} required></textarea></td>
-            </tr> 
+            </tr>
           </tbody>
         </table>
         <div className="btnP-container">
