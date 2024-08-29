@@ -74,7 +74,7 @@ function Join() {
     }
 
     try {
-      const response = await axios.post(`${process.env.process.env.REACT_APP_SERVER_URL}/api/join`, formData, {
+      const response = await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/join`, formData, {
         headers: {
           'Content-Type': 'application/json',
         },
