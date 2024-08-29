@@ -7,7 +7,7 @@ function PlayerWrite() {
   const { teamIdx } = useParams(); 
   const [formData, setFormData] = useState({
     title: '',
-    contents: '',
+    content: '',
     position: '',
   });
   const navigate = useNavigate();
@@ -18,6 +18,9 @@ function PlayerWrite() {
 
     if (!formData.title.trim()) {
       newErrors.title = '제목을 입력해주세요.';
+    }
+    if (!formData.content.trim()) {
+      newErrors.content = '자기소개를 입력해주세요.';
     }
 
     setErrors(newErrors);
@@ -45,7 +48,7 @@ function PlayerWrite() {
         ...formData,
         teamId: teamIdx,
         title: formData.title,
-        content: formData.contents
+        content: formData.content
       }, {
         headers: {
           'Authorization': token
@@ -70,12 +73,13 @@ function PlayerWrite() {
             {errors.title && <p className="error">{errors.title}</p>}
             <tr>
               <td>자기소개</td>
-              <td colSpan="2"><textarea name="contents" value={formData.contents} onChange={handleChange} required></textarea></td>
+              <td colSpan="2"><textarea name="content" value={formData.content} onChange={handleChange} required></textarea></td>
             </tr>
+            {errors.content && <p className="error">{errors.content}</p>}
             <tr>
               <td>선호 포지션</td>
               <td colSpan="2"><textarea name="position" value={formData.position} onChange={handleChange} required></textarea></td>
-            </tr>
+            </tr> 
           </tbody>
         </table>
         <div className="btnP-container">

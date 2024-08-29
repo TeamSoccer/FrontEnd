@@ -103,7 +103,7 @@ function PlayerDetail() {
         </table>
       </form>
       <button className="btnPD" onClick={() => navigate(`/soccerTeam/${teamId}`)}>목록으로</button>
-      <button className="btnPD" onClick={() => navigate(`/playerModify/${playerIdx}`, {state: {enroll}})}>수정하기</button>
+      <button className="btnPD" onClick={() => {navigate(`/playerModify/${playerIdx}`, { state: { enroll, teamId } });}}>수정하기</button>
       <button className="btnPD" onClick={handleDelete}>삭제하기</button>
     </div>
   );
