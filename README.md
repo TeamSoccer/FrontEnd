@@ -1,70 +1,62 @@
-# Getting Started with Create React App
+# 지역 축구팀의 홍보와 선수 모집을 돕는 온라인 플랫폼, TEAM SOCCER!
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+안녕하세요! TEAM SOCCER 프로젝트는 지역 축구팀의 홍보와 선수 모집을 돕는 온라인 플랫폼입니다.
 
-## Available Scripts
+| ![정우석👑](https://avatars.githubusercontent.com/u/127533265?v=4) | ![강민수](https://avatars.githubusercontent.com/u/150498634?v=4) | ![김민재](https://avatars.githubusercontent.com/u/103195432?v=4) | ![양원채](https://avatars.githubusercontent.com/u/79977182?v=4) |
+| :-------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------------------: | :-------------------------------------------------------------: |
+|             [정우석👑](https://github.com/QQWaseokE)              |              [강민수](https://github.com/HanUL220)               |             [김민재](https://github.com/baeppsae)              |               [양원채](https://github.com/ywonchae1)                |
 
-In the project directory, you can run:
+## 기능
 
-### `npm start`
+- 축구 팀 게시물 CRUD
+- 축구 팀 가입 신청 게시물 CRUD
+- 회원 가입 및 JWT 인증인가
+- 검색
+- Docker, Docker Compose, Git Action CICD Pipe line
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## 회원 가입
+![alt text](x-image/image.png)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 회원 가입 Validation Check
+![alt text](x-image/image-1.png)
 
-### `npm test`
+## 로그인
+![alt text](x-image/image-2.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## 로그인 Validation Check
+![alt text](x-image/image-3.png)
 
-### `npm run build`
+## 축구 팀 계시물 리스트
+![alt text](x-image/image-8.png)
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 축구 팀 게시물 등록
+![alt text](x-image/image-7.png)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![alt text](x-image/image-6.png)
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 축구 팀 게시물 상세
+![alt text](x-image/image-12.png)
 
-### `npm run eject`
+## 다른 축구 팀의 게시물 상세
+![alt text](x-image/image-19.png)
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 축구 팀 게시물 삭제
+![alt text](x-image/image-17.png)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## 축구 팀 정보 수정
+![alt text](x-image/image-16.png)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## 입단 신청서 작성
+![alt text](x-image/image-11.png)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 입단 신청서 상세
+![alt text](x-image/image-13.png)
 
-## Learn More
+## 다른 사람의 입단 신청서 상세
+![alt text](x-image/image-18.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## 입단 신청서 수정
+![alt text](x-image/image-14.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## 입단 신청서 삭제
+![alt text](x-image/image-15.png)
