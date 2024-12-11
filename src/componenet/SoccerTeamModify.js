@@ -80,7 +80,6 @@ function SoccerTeamModify() {
   };
 
   const handleDayClick = (teamDay) => {
-    console.log(teamDay.day)
     setTeamData(prevState => {
       const { day } = prevState;
       if (day.includes(teamDay)) {
@@ -103,8 +102,15 @@ function SoccerTeamModify() {
     if (!validate()) {
       return;
     }
+
+    const trimmedData = Object.fromEntries(
+      Object.entries(teamData).map(([key, value]) =>
+        [key, typeof value === 'string' ? value.trim() : value]
+      )
+    );
+    
     const data = new FormData();
-    data.append('data', new Blob([JSON.stringify(teamData)], { type: 'application/json' }));
+    data.append('data', new Blob([JSON.stringify(trimmedData)], { type: 'application/json' }));
     Array.from(files).forEach(file => {
       data.append('files', file);
     });

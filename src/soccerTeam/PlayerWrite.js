@@ -42,13 +42,17 @@ function PlayerWrite() {
       return;
     }
 
+    const trimmedData = Object.fromEntries(
+      Object.entries(formData).map(([key, value]) =>
+        [key, typeof value === 'string' ? value.trim() : value]
+      )
+    );
+
     const token = localStorage.getItem('token');
     try {
       await axios.post(`${process.env.REACT_APP_SERVER_URL}/api/enroll`, {
-        ...formData,
+        ...trimmedData,
         teamId: teamIdx,
-        title: formData.title,
-        content: formData.content
       }, {
         headers: {
           'Authorization': token
